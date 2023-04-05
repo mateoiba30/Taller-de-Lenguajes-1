@@ -4,13 +4,16 @@ Este repositorio contiene las prácticas realizadas en la materia **Taller de Le
 
 ## Prácticas
 
+- [practica 1](practica%201/)
+
 - [practica 1 extra](practica%201%20extra/)
 
 - [practica 2](practica%202/)
 
 - [practica 2 opcional](practica%202%20opcional/)
 
-- [practica 1](practica%201/)
+- [practica 3](practica%203/)
+
 
 
 Cada práctica incluye su correspondiente archivo de código fuente y un archivo README que explica los objetivos y los pasos seguidos para completar la práctica.
