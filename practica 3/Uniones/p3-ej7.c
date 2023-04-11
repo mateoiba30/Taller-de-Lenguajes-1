@@ -33,14 +33,14 @@ void cargarEstudiante(Sestudiante *est, int lon, int *dni){//otra forma de carga
     printf("ingrese apellido:");
     scanf("%s", est->apellido);
     printf("ingrese nombre: ");
-    scanf("%s", est->apellido);
+    scanf("%s", est->nombre);
     printf("ingrese legajo: ");
-    scanf("%s", est->apellido);
+    scanf("%s", est->legajo);
     printf("ingrese cero si tiene dni: ");
-    scanf("%d", &dni);
-    if(dni==0){//if dni==0
+    scanf("%d", dni);// como cargo un puntero: &(*dni) = dni
+    if(*dni==0){//if dni==0
         printf("ingrese DNI:");
-        scanf("%lld", &est->identificacion.DNI);
+        scanf("%lld", &(est->identificacion.DNI) );//lleva '&' porque no es un char
     }
     else{
         printf("ingrese pasaporte: ");
@@ -50,11 +50,12 @@ void cargarEstudiante(Sestudiante *est, int lon, int *dni){//otra forma de carga
 }
 void imprimirEstudiante(Sestudiante est, int lon, int dni){
     printf("apellido: %s", est.apellido);
-    printf("nombre: %s", est.nombre);
-    printf("legajo: %s", est.legajo);
+    printf(" nombre: %s", est.nombre);
+    printf(" legajo: %s", est.legajo);
+    // printf("dni: %d", dni);
     if(dni==0)//if dni==0
-        printf("DNI: %lf", &est.identificacion.DNI);
+        printf(" DNI: %lld", est.identificacion.DNI);//el printf nunca necesita el '&'
     else
-        printf("pasaporte: %s", est.identificacion.pasaporte);
+        printf(" pasaporte: %s", est.identificacion.pasaporte);
 
 }
