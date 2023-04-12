@@ -5,7 +5,7 @@
 typedef enum{ ORO, COPA, BASTO, ESPADA}Palos;
 
 typedef struct{
-    int palo;
+    Palos palo;//ahora es int  //HACERLO DEL TIPO Palos
     int numero;
 
 }carta;
