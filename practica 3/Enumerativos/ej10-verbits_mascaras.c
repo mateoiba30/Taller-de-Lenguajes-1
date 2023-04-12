@@ -13,7 +13,7 @@ typedef enum {
 int activarModulo(Telefono, char*[]);
 int desactivarModulo(Telefono, char*[]);
 int invertirModulo(Telefono, char*[]);
-int verEncendido(Telefono, char*[]);
+int verEncendido(Telefono, char*[]);//tmb pueden devolver Telefono
 
 
 void verBits(int);
