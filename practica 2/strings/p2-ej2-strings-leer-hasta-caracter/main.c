@@ -24,10 +24,10 @@ int main()
 }
 
 int finCaracter(char palabra[]){
-    int result=1;
+    int result=0;
     int longitud=strlen(palabra);
     if (palabra[longitud-1]=='o')
-        result=0;
+        result=1;//1 es verdadero
     return result;
 
 }

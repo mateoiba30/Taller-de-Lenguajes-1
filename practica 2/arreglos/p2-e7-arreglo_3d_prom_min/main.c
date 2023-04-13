@@ -17,7 +17,7 @@ int main()
     srand(time(NULL));
 
     float prom_anios[ANIOS]={0},precipitaciones [ANIOS][MESES][DIAS]={0};;//en cada anio guarda el prom de precipitaciones //inicializamos en cero
-    int min_mes_anios[ANIOS]={0};//en cada año guarda el minimo mes
+    int min_mes_anios[ANIOS]={0};//en cada aï¿½o guarda el minimo mes
 
     cargarPrecipitaciones(precipitaciones);
  //   imprimirPrecipitaciones(precipitaciones);

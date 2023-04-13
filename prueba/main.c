@@ -12,6 +12,19 @@ float calcularArea(rectangulo);
 
 int main(){
 
+    char *varias_p[4]={"hola", "como", "estas", "?"};
+    // printf("%s", varias_p[0]);
+    char caractere='x';
+    char *palabra="hola2";
+    varias_p[0]=palabra;
+    printf("%s fin ", varias_p[0]);
+
+
+    void *voidP;
+    float f=5.5;
+    voidP=&f;
+    printf("%f", *(float*)voidP);
+
     // printf("%d", !(3-3));
     rectangulo vectorRec[CANTREC];
     int i, pos_min=0;

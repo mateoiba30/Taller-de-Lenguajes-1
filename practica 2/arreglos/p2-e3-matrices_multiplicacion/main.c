@@ -6,7 +6,7 @@
 
 void cargarMatriz(int[M][N]);
 void multiplicarMatriz(int[M][N], int);
-void imprimirMatriz(int[M][N]);
+void imprimirMatriz(int[][N]);
 
 int main()
 {
@@ -39,7 +39,7 @@ void multiplicarMatriz(int matriz[M][N], int c){
     }
 }
 
-void imprimirMatriz(int matriz[M][N]){
+void imprimirMatriz(int matriz[][N]){
     int i, j;
     for(i=0; i<M; i++){
         for(j=0; j<N; j++){
