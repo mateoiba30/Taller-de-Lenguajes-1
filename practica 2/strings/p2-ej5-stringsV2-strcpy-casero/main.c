@@ -5,8 +5,8 @@ void copiar(char*, char*);
 
 int main()
 {
-    char *palabra1=NULL, *palabra2=NULL;
-    palabra1=(char*)malloc(256*sizeof(char));//reserva 256 caracteres en la heap
+    char palabra1[255], *palabra2=NULL;
+    // palabra1=(char*)malloc(256*sizeof(char));//reserva 256 caracteres en la heap
     palabra2=(char*)malloc(256*sizeof(char));//reserva 256 caracteres en la heap
 
     printf("ingrese una palabra: \n");

@@ -8,9 +8,10 @@ int main()
 {
     char *palabra=NULL, a, b;
     palabra=(char*)malloc(256*sizeof(char));//reserva 256 caracteres en la heap
+    //como todavía no vimmos la heap yo debería haber cargado el mensaje desde la programacion y no por teclado
 
     printf("ingrese una palabra: ");
-    scanf("%255s", palabra);//maximo leo 255 caracteres, lo que puedo usar de los 256 reervados
+    scanf("%[^\n]s", palabra);//maximo leo 255 caracteres, lo que puedo usar de los 256 reervados
     getchar();
 
     printf("ingrese el caracter a buscar\n");

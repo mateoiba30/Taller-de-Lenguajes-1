@@ -10,7 +10,7 @@ Este repositorio contiene las prácticas realizadas en la materia **Taller de Le
 
 - [practica 2](practica%202/)
 
-- [practica 2 opcional](practica%202%20opcional/)
+- [practica 2 opcional - teoria](practica%202%20opcional-%20teoria/)
 
 - [practica 3](practica%203/)
 
