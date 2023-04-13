@@ -10,6 +10,6 @@ int main(){
 int incremento(int N){//N toma el valor entero de i
  static int j=0;//que sea estatico significa que no borra nunca su contnido, aunque muera la funcion
  j++;//con cada bucle va incrementando
- return (N%2 ? N : N+j);  //N%2 siempre va a ser verdadera mas alla del N
- //siempre devuelve el valor de N para N>0 o N par. debido a que  esos casos el resto de N/2 es cero, y cero se toma por falso
+ return (N%2 ? N : N+j);  //N%2 siempre va a ser verdadera cuando le madno un par. SI recibe 1,5 trunca a 1, si recibe 0,7 trunca a cero el N
+//solo la última rep es falsa al mandar 0,8 N=0; 0%2 = 0 = falso; devulve N+j = 0 +4
 }

@@ -11,6 +11,8 @@ void inicializarRectangulo(rectangulo *);//tiene que estar declarado el tipo rec
 float calcularArea(rectangulo);
 
 int main(){
+
+    // printf("%d", !(3-3));
     rectangulo vectorRec[CANTREC];
     int i, pos_min=0;
     float area_i, min=9999;
