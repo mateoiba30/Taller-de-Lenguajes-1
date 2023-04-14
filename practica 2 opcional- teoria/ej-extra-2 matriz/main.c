@@ -12,7 +12,7 @@ int main()
 
     for(int i=0; i<CLI; i++){
         printf("Cliente %d\n", i+1);
-        getchar();
+        // getchar();
         cargarCliente(i, matriz,titulos);//le mando a cargar los titulos del vector del cliente
     }
     for(int i=0; i<TITU; i++){

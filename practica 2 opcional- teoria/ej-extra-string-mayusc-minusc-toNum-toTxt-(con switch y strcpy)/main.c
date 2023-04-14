@@ -37,6 +37,7 @@ int main()
 
 void especiales(char texto[],int nro){
     switch(nro){
+        case 0: strcpy(texto,"cero"); break;//me lo habia olvidado
         case 1: strcpy(texto,"uno"); break;
         case 2: strcpy(texto,"dos"); break;
         case 3: strcpy(texto,"tres"); break;
@@ -89,7 +90,8 @@ void numtoTxt(int nro, char texto[]){
 
 int digitos(int nro){
     int contador=0;
-
+    if(nro==0)
+        return 1;//no olvidar este caso
     while(nro>0){
         nro/=10;
         contador++;

@@ -20,19 +20,19 @@ int main(){
 
     printf("Fecha 1 ");
     printf("dia 1 ");
-    scanf("%f", &f1.dia);
+    scanf("%d", &f1.dia);
     printf("mes 1 ");
-    scanf("%f", &f1.mes);
+    scanf("%d", &f1.mes);
     printf("anio 1 ");
-    scanf("%f", &f1.anio);
+    scanf("%d", &f1.anio);
 
     printf("Fecha 2 ");
     printf("dia 2 ");
-    scanf("%f", &f2.dia);
+    scanf("%d", &f2.dia);
     printf("mes 2 ");
-    scanf("%f", &f2.mes);
+    scanf("%d", &f2.mes);
     printf("anio 2 ");
-    scanf("%f", &f2.anio);
+    scanf("%d", &f2.anio);
 
     switch(compararFechas(f1,f2)){
         case -1: printf("La fecha 1 es la mayor "); break;
@@ -47,12 +47,12 @@ int compararFechas(SFecha f1, SFecha f2){
 
     UFechaHack hack1, hack2;
 
-    hack1.fecha=f1;//guardo como struct
+    hack1.fecha=f1;//guardo como struct, cambio que deopende de la arquitectura de la computadora
     hack2.fecha=f2;
 
     if(hack1.hack<hack2.hack)//comparo como si toda una fecha sea un gran numero
         return 1;
-    else if(hack1.hack=hack2.hack)
+    else if(hack1.hack==hack2.hack)
         return 0;
 
     return -1;

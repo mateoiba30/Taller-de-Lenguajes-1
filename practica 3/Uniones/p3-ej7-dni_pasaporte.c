@@ -40,7 +40,7 @@ void cargarEstudiante(Sestudiante *est, int lon, int *dni){//otra forma de carga
     scanf("%d", dni);// como cargo un puntero: &(*dni) = dni
     if(*dni==0){//if dni==0
         printf("ingrese DNI:");
-        scanf("%lld", &(est->identificacion.DNI) );//lleva '&' porque no es un char
+        scanf("%lld", &(est->identificacion.DNI) );//lleva '&' porque no es un char* ni char[]
     }
     else{
         printf("ingrese pasaporte: ");

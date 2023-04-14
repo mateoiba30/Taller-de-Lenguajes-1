@@ -56,7 +56,8 @@ void numtoTxt(int nro, char texto[]){
 
 int digitos(int nro){
     int contador=0;
-
+    if(nro==0)
+        return 1;
     while(nro>0){
         nro/=10;
         contador++;

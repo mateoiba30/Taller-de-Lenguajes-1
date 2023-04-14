@@ -23,7 +23,7 @@ typedef struct{
 typedef struct{
     float lado1;
     float lado2;
-}Rectangulo;
+}Rectangulo;// las figuaras en lugar de ser struct podrían ser vectores
 
 typedef union{
     Circulo ciruculo;

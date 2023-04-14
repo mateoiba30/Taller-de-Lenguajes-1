@@ -28,7 +28,7 @@ void decimal_a_binario(int n){
     int aux;
     if(n<=0)// PUEDO PONER N==0
         return;
-        //printf("0"); LO MEJOR ES HACER RETURN PARA QUE NO IMPRIMA UN CERO DEMÁS
+        //printf("0"); LO MEJOR ES HACER RETURN PARA QUE NO IMPRIMA UN CERO DEMï¿½S
     else{
         aux=n;
         n=n/2;

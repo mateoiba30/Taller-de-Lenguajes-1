@@ -25,7 +25,7 @@ typedef struct{
 typedef union{
 
     ventana1 v1;
-    ventana2 v2;//ventana 2 y 3 podrían ser como
+    ventana2 v2;//ventana 2 y 3 podrían ser como un vector de puntos
     ventana3 v3;
 }union_ventanas;
 

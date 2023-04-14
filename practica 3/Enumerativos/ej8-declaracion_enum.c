@@ -1,4 +1,5 @@
 #include <stdio.h>
+// #define A 0.55
 typedef enum { IZQUIERDA, CENTRO_H, DERECHA } AlineacionHorizontal;
 typedef enum { ARRIBA=1, CENTRO_V, ABAJO } AlineacionVertical;
 typedef enum { DOS=2, CERO=0, UNO, MENOS_UNO=-1, OTRO } Numeros;//SE PUEDEN NUMERO NEGATIVOS!!
@@ -20,6 +21,7 @@ int main(){
     // printf("%d ", MENOS_UNO);
     // printf("%d ", OTRO);
 
+    // printf("%f", A);
     printf("%c ", LET_A);
     printf("%c ", LET_B);
     printf("%c ", LET_Z);

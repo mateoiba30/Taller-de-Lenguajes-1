@@ -65,7 +65,7 @@ void invertirModulo(Telefono *tel,char* mods[]){
     scanf("%d", &x);
 
     switch(x){//XOR 1 invierte el valor
-        case 7: tel->Bluetooth ^= 1; break;
+        case 7: tel->Bluetooth ^= 1; break; //puedo usar una mascara y XOR 1
         case 6: tel->Wifi^= 1; break;
         case 5: tel->GPS^= 1; break;
         case 4: tel->Datos^= 1; break;
@@ -86,7 +86,7 @@ void desactivarModulo(Telefono *tel, char* mods[]){
     scanf("%d", &x);
 
     switch(x){//les mando cero pa desactivar
-        case 7: tel->Bluetooth =0; break;
+        case 7: tel->Bluetooth =0; break; //puedo usar una mascara y un AND 0
         case 6: tel->Wifi=0; break;
         case 5: tel->GPS=0; break;
         case 4: tel->Datos=0; break;
@@ -109,7 +109,7 @@ void activarModulo(Telefono *tel, char* mods[]){
     }
     scanf("%d", &x);
     switch(x){//les mando 1 pa activar
-        case 7: tel->Bluetooth =1; break;
+        case 7: tel->Bluetooth =1; break;//puedo usar una mascara y un OR 1
         case 6: tel->Wifi=1; break;
         case 5: tel->GPS=1; break;
         case 4: tel->Datos=1; break;
