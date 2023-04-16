@@ -22,6 +22,14 @@ struct LED{
 
 int main(){
 
+    int cont=0;
+    double y;
+    // y=.1;
+    // printf("%f", y);
+
+    for(y=.1; y!=1.0; y+=.1, cont++)
+        printf("%f \n", y);
+
     // int numero=7, binario=3;
     // if(numero & binario ==1 )//si es verdadera, al menos coinciden en 1 bit a nivel binario
     //     printf("coinciden en algo");
