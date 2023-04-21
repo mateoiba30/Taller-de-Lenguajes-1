@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 void tirar_dados(int *x, int *y){
 
@@ -27,8 +28,8 @@ int main()        //fin 1 ganar, fin 2 perder, fin 0 seguir jugando
             fin=1;
             printf("perdiste porque sumaste 2 o 12\n");}
 
-    while(fin==0){//a repetir hasta perder o ganar  EN VEZ DE PREGUNTAR 1 VEZ AFUERA PODRÍA HABER USADO UN DO WHILE Y PREGUNTAR SIEMPRE ADENTRO
-        getchar();//al usar getchar simplemente sigo apretando el enter, podría usar un scanf par que sirva cualquier tecla
+    while(fin==0){//a repetir hasta perder o ganar  EN VEZ DE PREGUNTAR 1 VEZ AFUERA PODRï¿½A HABER USADO UN DO WHILE Y PREGUNTAR SIEMPRE ADENTRO
+        getchar();//al usar getchar simplemente sigo apretando el enter, podrï¿½a usar un scanf par que sirva cualquier tecla
         tirar_dados(&x, &y);
         printf("dado 1: %d \t dado 2: %d \n", x,y);
 
