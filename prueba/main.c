@@ -1,12 +1,9 @@
 #include <stdio.h>
 
 int main(){
+int a=5, b=6, c=7;
+a=b=c;
+printf("%d %d %d", a, b, c);
 
-    int i=0;
-
-    for(i=0;i<5;i++)
-        printf("%d", &i);
-
-    return 0;
-
+return 0;
 }
