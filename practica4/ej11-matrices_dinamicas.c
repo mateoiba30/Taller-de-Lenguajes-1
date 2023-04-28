@@ -29,7 +29,7 @@ void multiplos3(int* matriz, int f, int c){
     for(int i=0; i<f; i++){
         for(int j=0; j<c; j++){
             if(matriz[i*c + j] % 3 ==0)
-                printf("%d", matriz[i*c + j]);
+                printf("%d \t", matriz[i*c + j]);
         }
     }
 }
