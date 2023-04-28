@@ -5,6 +5,9 @@
 void inicializarMatriz(int*, int, int);
 int* reservar(int, int);
 void multiplos3(int*, int, int);
+void imprimirMatrizPorColumnas(int*, int, int);
+void imprimirMatrizPorFilas(int*, int, int);
+
 
 int main(){
     int *matriz, c, f;
@@ -20,10 +23,30 @@ int main(){
     //     printf("%lf \t", vector[i]);
 
     multiplos3( matriz, f, c);
-
+    printf("\nimpresion por columnas: \n");
+    imprimirMatrizPorColumnas(matriz, f, c);
+    printf("\nimpresion por filas: \n");
+    imprimirMatrizPorFilas(matriz, f, c);
     free(matriz);//NO OLVIDAR!!!
     return 0;
 }
+
+void imprimirMatrizPorColumnas(int * matriz, int f, int c){
+    for(int i=0; i<c; i++){
+        for(int j=0; j<f; j++){
+            printf("%d \t", matriz[j*f + i]);
+        }
+    }
+}
+
+void imprimirMatrizPorFilas(int * matriz, int f, int c){
+    for(int i=0; i<f; i++){
+        for(int j=0; j<c; j++){
+            printf("%d \t", matriz[i*c + j]);
+        }
+    }
+}
+
 
 void multiplos3(int* matriz, int f, int c){
     for(int i=0; i<f; i++){
