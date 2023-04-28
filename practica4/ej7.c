@@ -16,6 +16,7 @@ void agregarFinal(lista*, int );
 int tamanio(lista);
 void imprimirLista(lista);
 void liberarLista(lista*);
+void invertirLista(lista, lista*);
 
 
 int main(){
@@ -26,26 +27,35 @@ int main(){
     inicializarLista(&l2);
 
     printf("para finalizar ingresar cero\n");
+    printf("1er numero:");
+    scanf("%d", &n); //no olvidar de leer
     while(n!=0){
-        printf("numero: \n");
-        scanf("%d", &n);
-        agregarFinal(&l, n);
-    }
+        agregarFinal(&l, n);//primero agrego y desp comparo, para no agregar el cero
 
-    invertirLista(l, &l2);
+        printf("otro numero:");
+        scanf("%d", &n); 
+    }
     
     imprimirLista(l);
-    printf("%d", tamanio(l));
+    printf("tamanio: %d \n", tamanio(l));
 
+    invertirLista(l, &l2);
     imprimirLista(l2);
-    printf("%d", tamanio(l2));
+    printf("tamanio %d \n", tamanio(l2));
 
     liberarLista(&l);
     liberarLista(&l2);
     return 0;
 }
 
-void invertirLista()
+void invertirLista(lista l1, lista *l2){
+    //l1 no es modificada, no pierdo el puntero porque mando copia
+    while(l1!=NULL){
+        agregarInicio(l2, l1->dato);
+        l1=l1->sig;
+    }
+
+}
 
 void inicializarLista(lista* l){
     (*l)=NULL;
