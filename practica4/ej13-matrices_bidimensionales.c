@@ -4,6 +4,10 @@
 int** reservar(int, int);
 void inicializarMatriz(int**, int, int);
 void multiplos3(int**, int, int);
+int** liberarMatriz(int**, int, int);
+void inicializarMatriz(int**, int, int);
+void imprimirMatrizPorColumnas(int **, int, int);
+void imprimirMatrizPorFilas(int **, int, int);
 
 int main(){
     int **matriz, c, f;//arreglo de filas | int** filas | int* columnas | int dato
@@ -14,19 +18,27 @@ int main(){
     scanf("%d", &c);
     matriz=reservar(c, f);
 
+    inicializarMatriz(matriz,f,c);
+
+    multiplos3(matriz, f, c);
     
-    for(int i=0; i<f; i++)
-        free(matriz[i]);//libero cada fila
-    free(matriz);//libero vector de filas
-    
+    matriz=liberarMatriz(matriz, f, c); 
+    // printf("%d", matriz[10][10]); //no imprime nada porque ya liberé
     return 0;
 }
 
-void multiplos3(int** matriz, int f, int c){
+void imprimirMatrizPorColumnas(int ** matriz, int f, int c){
+    for(int i=0; i<c; i++){
+        for(int j=0; j<f; j++){
+            printf("%d \t", matriz[j][i]);
+        }
+    }
+}
+
+void imprimirMatrizPorFilas(int ** matriz, int f, int c){
     for(int i=0; i<f; i++){
         for(int j=0; j<c; j++){
-            if(matriz[i][j] % 3 ==0)
-                printf("%d \t", matriz[i][j]);
+            printf("%d \t", matriz[i][j]);
         }
     }
 }
@@ -38,6 +50,23 @@ void inicializarMatriz(int** matriz, int f, int c){
             printf("fila %d  columna %d: ", (i+1), (j+1));
             scanf("%d", &aux);
             matriz[i][j]=aux;
+        }
+    }
+}
+
+int** liberarMatriz(int** matriz, int f, int c){
+    for(int i=0; i<f; i++)
+        free(matriz[i]);//libero cada fila
+    free(matriz);//libero vector de filas | no liberarlo primero, ni tampoco liberarlo solo a él
+
+    return matriz;
+}
+
+void multiplos3(int** matriz, int f, int c){
+    for(int i=0; i<f; i++){
+        for(int j=0; j<c; j++){
+            if(matriz[i][j] % 3 ==0)
+                printf("%d \t", matriz[i][j]);
         }
     }
 }
