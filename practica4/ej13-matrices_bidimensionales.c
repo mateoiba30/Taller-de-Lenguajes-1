@@ -75,7 +75,8 @@ int** reservar( int c, int f){
     int **matriz;
     matriz=(int**)malloc((f)*sizeof(int*));//reservo arreglos de columnas, por tantas filas tenga
     for(int i=0; i<f; i++){//para cada fila voy reservando
-        *matriz=(int*)malloc(c*sizeof(int));//cada fila es del largo de cantidad de columnas
+        matriz[i]=(int*)malloc(c*sizeof(int));//cada fila es del largo de cantidad de columnas
+        //PONER MATRIZ[I]
     }
     return matriz;
 }
