@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>//para usar malloc, realloc, etc -> NO OLVIDAR
 
-int* cargarDivisores(int, int*, int);
+int* cargarDivisores(int, int*, int*);
 
 int main(){
     int* divisores=NULL, n, diml=0;
@@ -9,7 +9,7 @@ int main(){
     printf("Ingrese un numero: ");
     scanf("%d", &n);
 
-    divisores=cargarDivisores(n, divisores, diml);
+    divisores=cargarDivisores(n, divisores, &diml);
 
     for(int i=0; i<diml; i++)
         printf("%d \t", divisores[i]);
@@ -19,13 +19,24 @@ int main(){
     return 0;
 }
 
-int* cargarDivisores(int n, int* divisores, int diml){
-    for(int i=1; i<=n; i++){//iniciar en 1 para no dividir por cero
-
-        if(n % i ==0){//es divisor
-            diml++;
-            divisores = (int*) realloc(divisores, diml * sizeof(int));
-            divisores[diml-1]=i;//cargo divisor en la ultima pos
+int* cargarDivisores(int n, int* divisores, int* diml){
+    int aux;
+    if(n<0){
+        for(int i=1; i<=-n; i++){//iniciar en 1 para no dividir por cero
+            if(n % i ==0){//es divisor
+                (*diml)++;
+                divisores = (int*) realloc(divisores, (*diml) * sizeof(int));
+                divisores[*diml-1]=(-i);//cargo divisor en la ultima pos
+            }
+        }
+    }
+    else{
+        for(int i=1; i<=aux; i++){//iniciar en 1 para no dividir por cero
+            if(n % i ==0){//es divisor
+                (*diml)++;
+                divisores = (int*) realloc(divisores, (*diml) * sizeof(int));
+                divisores[*diml-1]=i;//cargo divisor en la ultima pos
+            }
         }
     }
     return divisores;
