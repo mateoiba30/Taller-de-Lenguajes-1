@@ -20,9 +20,9 @@ int main(){
     srand(time(NULL));
     int tablero[LADOS][LADOS], dimlBombas=-1;//diml es cuantos voy cargando
     punto2D posBombas[BOMBAS];
-    elegirBombas(posBombas, &dimlBombas);
 
-    imprimirPosBombas(posBombas);
+    elegirBombas(posBombas, &dimlBombas);
+    // imprimirPosBombas(posBombas);
 
     return 0;
 }
