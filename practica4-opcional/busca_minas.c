@@ -31,7 +31,10 @@ typedef struct{
 
 }punto2D;
 
-void impirmirPrueba(casilla[][LADOS]);
+void imprimirTitulo();
+void mostrarTablero(casilla[][LADOS]);
+
+void revelarTablero(casilla[][LADOS]);
 void inicializarTablero(casilla[][LADOS], punto2D[]);
 void contarBombasVecinas(casilla[][LADOS]);
 
@@ -50,9 +53,41 @@ int main(){
     // imprimirPosBombas(posBombas);
     inicializarTablero(tablero, posBombas);
     contarBombasVecinas(tablero);//para contar las bombas vecinas, 1ro deboi haber cargado quienes eran bombas
-    // impirmirPrueba(tablero);
+    // revelarTablero(tablero);
+    imprimirTitulo();
+    inicioJueg0(tablero);
+    
 
     return 0;
+}
+
+void imprimirTitulo
+
+void inicioJuego(casilla tablero[][LADOS]){
+    int terminar=0;
+    while(terminar!=0){
+        mostrarTablero(tablero);
+    }
+}
+
+void mostrarTablero(casilla tablero[][LADOS]){
+    for(int i=0; i<LADOS; i++){
+        for(int j=0; j<LADOS; j++){
+            if(tablero[i][j].esVisible){
+                if(tablero[i][j].esBomba)
+                    revelarTablero(tablero);
+                else
+                    printf("%d \t", tablero[i][j].bombasVecinas);
+            }
+            else{
+                if(tablero[i][j].tieneBandera)
+                    printf("%c \t", CHAR_BANDERA);
+                else
+                    printf("%c \t", CHAR_OCULTA);
+            }           
+        }
+        printf("\n \n");
+    }
 }
 
 void contarBombasVecinas(casilla tablero[][LADOS]){
@@ -81,7 +116,7 @@ void contarBombasVecinas(casilla tablero[][LADOS]){
     }
 }
 
-void impirmirPrueba(casilla tablero[][LADOS]){
+void revelarTablero(casilla tablero[][LADOS]){
     for(int i=0; i<LADOS; i++){
         for(int j=0; j<LADOS; j++){
             if(tablero[i][j].esBomba)
