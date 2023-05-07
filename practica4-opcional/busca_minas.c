@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+// #include <time.h> //para probar codigo elijo pseudoaleatoriamiente
 
 #define BOMBAS 10
 #define LADOS 8
 #define CHAR_BOMBA 229//EB
 #define CHAR_OCULTA 177//B1
 #define CHAR_BANDERA 16
+#define HERMANOS_MAX 8
 
 // i es fila
 //j es para columna
@@ -31,10 +32,10 @@ typedef struct{
 
 }punto2D;
 
-void impirmirBombasTablero(casilla[][LADOS]);
+void impirmirPrueba(casilla[][LADOS]);
 void inicializarTablero(casilla[][LADOS], punto2D[]);
-int contarBombasVecinas(int, int, punto2D[]);
-void reconocerVecinos (int [], int, int);
+int contarBombasVecinas(int, int, punto2D[], casilla[][LADOS]);
+// void reconocerVecinos (int [], int, int);
 
 void imprimirPosBombas(punto2D[]);
 void elegirBombas(punto2D[], int *);
@@ -42,7 +43,7 @@ int buscarPunto(punto2D, punto2D[], int);
 
 int main(){
 
-    // srand(time(NULL));
+    // srand(time(NULL));  //para probar codigo elijo pseudoaleatoriamiente
     casilla tablero[LADOS][LADOS];
     int dimlBombas=-1;//diml es cuantos voy cargando
     punto2D posBombas[BOMBAS];
@@ -50,18 +51,18 @@ int main(){
     elegirBombas(posBombas, &dimlBombas);
     // imprimirPosBombas(posBombas);
     inicializarTablero(tablero, posBombas);
-    impirmirBombasTablero(tablero);
+    impirmirPrueba(tablero);
 
     return 0;
 }
 
-void impirmirBombasTablero(casilla tablero[][LADOS]){
+void impirmirPrueba(casilla tablero[][LADOS]){
     for(int i=0; i<LADOS; i++){
         for(int j=0; j<LADOS; j++){
             if(tablero[i][j].esBomba)
                 printf("%c", CHAR_BOMBA);
             else
-                printf("%c", CHAR_OCULTA);
+                printf("%d", tablero[i][j].bombasVecinas);
             printf("\t");
         }
         printf("\n \n");
@@ -82,44 +83,87 @@ void inicializarTablero(casilla tablero[][LADOS], punto2D posBombas[]){
 
             tablero[i][j].tieneBandera=0;
             tablero[i][j].esVisible=0;
-            tablero[i][j].bombasVecinas=contarBombasVecinas(i,j,posBombas);
+            tablero[i][j].bombasVecinas=contarBombasVecinas(i,j,posBombas, tablero);
             
         }
     }
 }
 
-int contarBombasVecinas(int i, int j, punto2D posBombas[]){
-    int contador=0, casillasVecinas[8]={1, 1, 1, 1, 1, 1, 1, 1};//si está con un 1 significa que tiene esa casilla
-    reconocerVecinos(casillasVecinas, i, j);
-    for(int k=0; k<8; k++){
-        if(casillasVecinas[k]==1)
-            contador++;
+int contarBombasVecinas(int i, int j, punto2D posBombas[], casilla tablero[][LADOS]){
+    //no puedo inicializar vector con un numero no define si queiro usar {}
+    int contador=0, casillasVecinas[HERMANOS_MAX]={1, 1, 1, 1, 1, 1, 1, 1};//si está con un 1 significa que tiene esa casilla
+    // reconocerVecinos(casillasVecinas, i, j);
+
+    // if(casillasVecinas[sup1]==1)//si tiene hermano arriba a la izquierda
+    //     contador+=tablero[i-1][j-1].esBomba;
+    // if(casillasVecinas[sup2]==1)
+    //     contador+=tablero[i-1][j].esBomba;
+    // if(casillasVecinas[sup3]==1)
+    //     contador+=tablero[i-1][j+1].esBomba;
+
+    // if(casillasVecinas[izq]==1)
+    //     contador+=tablero[i][j-1].esBomba;
+    // if(casillasVecinas[der]==1)
+    //     contador+=tablero[i][j+1].esBomba;
+
+    // if(casillasVecinas[pos1]==1)
+    //     contador+=tablero[i+1][j-1].esBomba;
+    // if(casillasVecinas[pos2]==1)
+    //     contador+=tablero[i+1][j].esBomba;
+    // if(casillasVecinas[pos3]==1)
+    //     contador+=tablero[i+1][j+1].esBomba;
+
+    // // printf("contador: %d", contador);
+    // int hermanos=0;
+    // for(int k=0; k<BOMBAS; k++){
+    //     hermanos+=casillasVecinas[k];
+    // }
+
+    if(j<LADOS-1)
+        contador+=tablero[i][j+1].esBomba;
+    else if(j>0)
+        contador+=tablero[i][j-1].esBomba;
+
+    if(i>0){
+        contador+=tablero[i-1][j].esBomba;
+        if(j>0)
+            contador+=tablero[i-1][j-1].esBomba;
+        else if(j<LADOS-1)
+            contador+=tablero[i-1][j+1].esBomba;
     }
+    else if(i<LADOS -1){
+        contador+=tablero[i+1][j].esBomba;
+        if(j>0)
+            contador+=tablero[i+1][j-1].esBomba;
+        else if(j<LADOS-1)
+        contador+=tablero[i+1][j+1].esBomba;
+    }
+    
     return contador;
 }
 
-void reconocerVecinos (int casillasVecinas[], int i, int j){
-    if(j ==0){//no tiene hermanos a la izquierda
-        casillasVecinas[sup1]=0;
-        casillasVecinas[izq]=0;
-        casillasVecinas[pos1]=0;
-    }
-    if(j == (LADOS - 1)){//no tiene hermanos a la derecha
-        casillasVecinas[sup3]=0;
-        casillasVecinas[der]=0;
-        casillasVecinas[pos3]=0;
-    }
-    if(i ==0){//no tiene hermanos a la arriba
-        casillasVecinas[sup1]=0;
-        casillasVecinas[sup2]=0;
-        casillasVecinas[sup3]=0;
-    }
-    if(j == (LADOS - 1)){//no tiene hermanos a abajo
-        casillasVecinas[pos1]=0;
-        casillasVecinas[pos2]=0;
-        casillasVecinas[pos3]=0;
-    }
-}
+// void reconocerVecinos (int casillasVecinas[], int i, int j){
+//     if(j ==0){//no tiene hermanos a la izquierda
+//         casillasVecinas[sup1]=0;
+//         casillasVecinas[izq]=0;
+//         casillasVecinas[pos1]=0;
+//     }
+//     else if(j == (LADOS - 1)){//no tiene hermanos a la derecha
+//         casillasVecinas[sup3]=0;
+//         casillasVecinas[der]=0;
+//         casillasVecinas[pos3]=0;
+//     }
+//     if(i ==0){//no tiene hermanos a la arriba
+//         casillasVecinas[sup1]=0;
+//         casillasVecinas[sup2]=0;
+//         casillasVecinas[sup3]=0;
+//     }
+//     else if (i == (LADOS - 1)){//no tiene hermanos a abajo
+//         casillasVecinas[pos1]=0;
+//         casillasVecinas[pos2]=0;
+//         casillasVecinas[pos3]=0;
+//     }
+// }
 
 void imprimirPosBombas(punto2D posBombas[]){
     for(int i=0; i<BOMBAS; i++){
