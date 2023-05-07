@@ -33,7 +33,7 @@ typedef struct{
 
 void impirmirPrueba(casilla[][LADOS]);
 void inicializarTablero(casilla[][LADOS], punto2D[]);
-int contarBombasVecinas(int, int, casilla[][LADOS]);
+void contarBombasVecinas(casilla[][LADOS]);
 
 void imprimirPosBombas(punto2D[]);
 void elegirBombas(punto2D[], int *);
@@ -43,51 +43,42 @@ int main(){
 
     // srand(time(NULL));  //para probar codigo elijo pseudoaleatoriamiente
     casilla tablero[LADOS][LADOS];
-    int dimlBombas=-1;//diml es cuantos voy cargando
+    int dimlBombas=0;//diml es cuantos voy cargando
     punto2D posBombas[BOMBAS];
 
     elegirBombas(posBombas, &dimlBombas);
     // imprimirPosBombas(posBombas);
     inicializarTablero(tablero, posBombas);
-    impirmirPrueba(tablero);
+    contarBombasVecinas(tablero);//para contar las bombas vecinas, 1ro deboi haber cargado quienes eran bombas
+    // impirmirPrueba(tablero);
 
     return 0;
 }
 
-int contarBombasVecinas(int i, int j, casilla tablero[][LADOS]){
-    int contador=0;
+void contarBombasVecinas(casilla tablero[][LADOS]){
+    for(int i=0; i<LADOS; i++){
+        for(int j=0; j<LADOS; j++){
+            if(j<LADOS-1)
+                tablero[i][j].bombasVecinas+=tablero[i][j+1].esBomba;
+            if(j>0)
+                tablero[i][j].bombasVecinas+=tablero[i][j-1].esBomba;
 
-    if(j<LADOS-1 && tablero[i][j+1].esBomba){
-        contador++;
-        printf("%d ", contador);
-    }
-    else{
-        if(j>0 && tablero[i][j-1].esBomba)
-            contador++;
-    }
-    if(i>0 && tablero[i-1][j].esBomba){
-        contador++;
-        if(j>0 && tablero[i-1][j-1].esBomba)
-            contador++;
-        else {
-            if(j<LADOS-1 && tablero[i-1][j+1].esBomba==1)
-                contador++;
-        }
-    }
-    else{
-
-        if(i<LADOS -1 && tablero[i+1][j].esBomba==1){
-            contador++;
-            if(j>0 && tablero[i+1][j-1].esBomba==1)
-                contador++;
-            else{
-                if(j<LADOS-2 && tablero[i+1][j+1].esBomba==1)
-                    contador++;
+            if(i>0){
+                tablero[i][j].bombasVecinas+=tablero[i-1][j].esBomba;//nop poner else porque debo comparar todos los casos
+                if(j>0)
+                    tablero[i][j].bombasVecinas+=tablero[i-1][j-1].esBomba;
+                if(j<LADOS-1)
+                    tablero[i][j].bombasVecinas+=tablero[i-1][j+1].esBomba;
+            }
+            if(i<LADOS -1){
+                tablero[i][j].bombasVecinas+=tablero[i+1][j].esBomba;
+                if(j>0)
+                    tablero[i][j].bombasVecinas+=tablero[i+1][j-1].esBomba;
+                if(j<LADOS-1)
+                    tablero[i][j].bombasVecinas+=tablero[i+1][j+1].esBomba;
             }
         }
     }
-    // printf("contador: %d", contador);
-    return contador;
 }
 
 void impirmirPrueba(casilla tablero[][LADOS]){
@@ -116,7 +107,7 @@ void inicializarTablero(casilla tablero[][LADOS], punto2D posBombas[]){
 
             tablero[i][j].tieneBandera=0;
             tablero[i][j].esVisible=0;
-            tablero[i][j].bombasVecinas=contarBombasVecinas(i,j, tablero);
+            tablero[i][j].bombasVecinas=0;
             
         }
     }
@@ -130,12 +121,12 @@ void imprimirPosBombas(punto2D posBombas[]){
 
 void elegirBombas(punto2D posBombas[], int *dimlBombas){//no poner bombas entre los corchetes porque lo tendría que poner tmb en el prototipo y es a fin de cuentas innecesario
     punto2D nuevoPunto;
-    for(int i=0; i<=BOMBAS; i++){// <= para cargar todas las bombas
+    for(int i=0; i<BOMBAS; i++){// <= para cargar todas las bombas
         nuevoPunto.fila=rand()%(LADOS);
         nuevoPunto.columna=rand()%(LADOS);
         if( buscarPunto(nuevoPunto, posBombas, (*dimlBombas)) == 0){
             (*dimlBombas)++;
-            posBombas[(*dimlBombas)-1]=nuevoPunto;//cargo al final
+            posBombas[(*dimlBombas)-1]=nuevoPunto;//cargo al final, diml representa la cant de elementos
         }
         else
             i--;//repito paso
