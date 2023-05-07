@@ -57,34 +57,24 @@ int main(){
 int contarBombasVecinas(int i, int j, casilla tablero[][LADOS]){
     int contador=0;
 
-    if(j<LADOS-1 && tablero[i][j+1].esBomba){
-        contador++;
-        printf("%d ", contador);
-    }
-    else{
-        if(j>0 && tablero[i][j-1].esBomba)
-            contador++;
-    }
-    if(i>0 && tablero[i-1][j].esBomba){
-        contador++;
-        if(j>0 && tablero[i-1][j-1].esBomba)
-            contador++;
-        else {
-            if(j<LADOS-1 && tablero[i-1][j+1].esBomba==1)
-                contador++;
-        }
-    }
-    else{
+    if(j<LADOS-1)
+        contador+=tablero[i][j+1].esBomba;
+    else if(j>0)
+        contador+=tablero[i][j-1].esBomba;
 
-        if(i<LADOS -1 && tablero[i+1][j].esBomba==1){
-            contador++;
-            if(j>0 && tablero[i+1][j-1].esBomba==1)
-                contador++;
-            else{
-                if(j<LADOS-2 && tablero[i+1][j+1].esBomba==1)
-                    contador++;
-            }
-        }
+    if(i>0){
+        contador+=tablero[i-1][j].esBomba;
+        if(j>0)
+            contador+=tablero[i-1][j-1].esBomba;
+        else if(j<LADOS-1)
+            contador+=tablero[i-1][j+1].esBomba;
+    }
+    else if(i<LADOS -1){
+        contador+=tablero[i+1][j].esBomba;
+        if(j>0)
+            contador+=tablero[i+1][j-1].esBomba;
+        else if(j<LADOS-2)
+        contador+=tablero[i+1][j+1].esBomba;
     }
     // printf("contador: %d", contador);
     return contador;
@@ -94,9 +84,10 @@ void impirmirPrueba(casilla tablero[][LADOS]){
     for(int i=0; i<LADOS; i++){
         for(int j=0; j<LADOS; j++){
             if(tablero[i][j].esBomba)
-                printf("%c \t", CHAR_BOMBA);
+                printf("%c", CHAR_BOMBA);
             else
-                printf("%d \t", tablero[i][j].bombasVecinas);
+                printf("%d", tablero[i][j].bombasVecinas);
+            printf("\t");
         }
         printf("\n \n");
     }
