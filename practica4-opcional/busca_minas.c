@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef _WIN32
+#include<windows.h>
+#endif
 // #include <time.h> //para probar codigo elijo pseudoaleatoriamiente
 
 #define BOMBAS 10
@@ -31,6 +34,9 @@ typedef struct{
 
 }punto2D;
 
+void inicioJuego(casilla[][LADOS], punto2D[]);
+
+void limpiar_pantalla();
 void imprimirTitulo();
 void mostrarTablero(casilla[][LADOS]);
 
@@ -50,27 +56,50 @@ int main(){
     punto2D posBombas[BOMBAS];
 
     elegirBombas(posBombas, &dimlBombas);
-    // imprimirPosBombas(posBombas);
     inicializarTablero(tablero, posBombas);
     contarBombasVecinas(tablero);//para contar las bombas vecinas, 1ro deboi haber cargado quienes eran bombas
-    // revelarTablero(tablero);
-    imprimirTitulo();
-    inicioJueg0(tablero);
-    
+    inicioJuego(tablero, posBombas);
 
     return 0;
 }
 
-void imprimirTitulo
+void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int cantBombasAcertadas){
+    int fila, columna;
+    printf("->");
+    scanf("%d",&accion);
+    printf("->");
+    scanf("%d",&fila);
+    printf("->");
+    scanf("%d",&columna);
+}
 
-void inicioJuego(casilla tablero[][LADOS]){
-    int terminar=0;
-    while(terminar!=0){
+void inicioJuego(casilla tablero[][LADOS], punto2D posBombas[]){
+    int cantBombasAcertadas=0;
+    while(cantBombasAcertadas!=BOMBAS){
         mostrarTablero(tablero);
+        realizarJugada(tablero, posBombas, cantBombasAcertadas);
     }
 }
 
+void limpiar_pantalla(){
+  #ifdef _WIN32
+    system("cls");
+  #else
+    system("clear");
+  #endif
+}
+
+void imprimirTitulo(){
+    printf("--------------------\n");
+    printf("|    BUSCA MINAS   |\n");
+    printf("--------------------\n");
+    printf("1 para excavar, 2 para bandera. Luego indicar fila y columna\n");
+
+}
+
 void mostrarTablero(casilla tablero[][LADOS]){
+    limpiar_pantalla();
+    imprimirTitulo();
     for(int i=0; i<LADOS; i++){
         for(int j=0; j<LADOS; j++){
             if(tablero[i][j].esVisible){
@@ -117,6 +146,8 @@ void contarBombasVecinas(casilla tablero[][LADOS]){
 }
 
 void revelarTablero(casilla tablero[][LADOS]){
+    limpiar_pantalla();
+    imprimirTitulo();
     for(int i=0; i<LADOS; i++){
         for(int j=0; j<LADOS; j++){
             if(tablero[i][j].esBomba)
