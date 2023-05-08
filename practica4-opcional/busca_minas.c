@@ -115,17 +115,20 @@ int main(){
 //     }
 // }
 
+
 void excavarRecursivo(casilla tablero[][LADOS], int i, int j){
-    printf("entro\n");
+    
     for(int k=i-1; k<=i+1; k++){
         for(int l=j-1; l<=j+1; l++){
-            tablero[k][l].esVisible=1;
-            if(k<LADOS && k>=0 && l<LADOS && l>=0 && tablero[k][l].bombasVecinas==0 && tablero[k][l].esVisible==0){        
-                excavarRecursivo(tablero, k, l);
+            if(k<LADOS && k>=0 && l<LADOS && l>=0 && tablero[k][l].esVisible==0){//CHEQUEO LOS HERMANOS EXTERIORES ESTEN EN CONDICIONES PARA MANDARLOS
+                tablero[i][j].esVisible=1;
+                if(tablero[k][l].bombasVecinas==0)
+                    excavarRecursivo(tablero, k, l);        
             }
         }
     }
 }
+
 
 void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBombasAcertadas, estados *estado){
     int fila, columna, accion;
