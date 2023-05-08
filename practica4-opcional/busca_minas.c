@@ -78,7 +78,7 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
     printf("->");
     scanf("%d",&fila);
     printf("->");
-    scanf(" %c", &columna_char);
+    scanf(" %c", &columna_char);//PONER UN ESPACIO ANTES DE %C Y LUEGO GETCHAR PARA ELER SIN ERRORES!!!
     getchar();
 
     switch(columna_char){
