@@ -78,20 +78,19 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
     printf("->");
     scanf("%d",&fila);
     printf("->");
-    scanf("%d", &columna);
-    // scanf("%c",&columna_char);
-    // getchar();
+    scanf("%c", &columna_char);
+    getchar();
 
-    // switch(columna_char){
-    //     case 'A':columna=A; break;
-    //     case 'B':columna=B; break;
-    //     case 'C':columna=C; break;
-    //     case 'D':columna=D; break;
-    //     case 'E':columna=E; break;
-    //     case 'F':columna=F; break;
-    //     case 'G':columna=G; break;
-    //     case 'H':columna=H; break;
-    // }
+    switch(columna_char){
+        case 'A':columna=A; break;
+        case 'B':columna=B; break;
+        case 'C':columna=C; break;
+        case 'D':columna=D; break;
+        case 'E':columna=E; break;
+        case 'F':columna=F; break;
+        case 'G':columna=G; break;
+        case 'H':columna=H; break;
+    }
 
     if(accion==EXCAVAR){
         if(tablero[fila][columna].esBomba)
@@ -170,7 +169,7 @@ void mostrarTablero(casilla tablero[][LADOS]){
                     printf("%c \t", CHAR_OCULTA);
             }           
         }
-        printf("\n \n");
+        printf("\n\n\n");
     }
 }
 
