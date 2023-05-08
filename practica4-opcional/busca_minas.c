@@ -15,6 +15,10 @@
 //j es para columna
 //1 para verdadero
 
+typedef enum {EXCAVAR, BANDERA} acciones;
+
+typedef enum {A, B, C, D, E, F, G, H} columnas;
+
 typedef enum  {sup1, sup2, sup3, izq, der, pos1, pos2, pos3 } enumCasillasVecinas;
 // 0 1 2
 // 3 x 4
@@ -34,7 +38,9 @@ typedef struct{
 
 }punto2D;
 
+void realizarJugada(casilla[][LADOS], punto2D[], int*, int *);
 void inicioJuego(casilla[][LADOS], punto2D[]);
+void visualizarBombas(casilla[][LADOS]);
 
 void limpiar_pantalla();
 void imprimirTitulo();
@@ -63,21 +69,67 @@ int main(){
     return 0;
 }
 
-void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int cantBombasAcertadas){
-    int fila, columna;
+void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBombasAcertadas, int *perder){
+    int fila, columna, accion;
+    char columna_char;
+
     printf("->");
     scanf("%d",&accion);
     printf("->");
     scanf("%d",&fila);
     printf("->");
-    scanf("%d",&columna);
+    scanf("%d", &columna);
+    // scanf("%c",&columna_char);
+    // getchar();
+
+    // switch(columna_char){
+    //     case 'A':columna=A; break;
+    //     case 'B':columna=B; break;
+    //     case 'C':columna=C; break;
+    //     case 'D':columna=D; break;
+    //     case 'E':columna=E; break;
+    //     case 'F':columna=F; break;
+    //     case 'G':columna=G; break;
+    //     case 'H':columna=H; break;
+    // }
+
+    if(accion==EXCAVAR){
+        if(tablero[fila][columna].esBomba)
+            (*perder)=1;
+        else
+            tablero[fila][columna].esVisible=1; 
+    }
+    else{
+        tablero[fila][columna].tieneBandera^=1;//cambio el estado con XOR
+        if(tablero[fila][columna].esBomba)
+            if(tablero[fila][columna].tieneBandera)
+                (*cantBombasAcertadas)++;
+            else    
+                (*cantBombasAcertadas)--;
+    }
 }
 
 void inicioJuego(casilla tablero[][LADOS], punto2D posBombas[]){
-    int cantBombasAcertadas=0;
-    while(cantBombasAcertadas!=BOMBAS){
+    int cantBombasAcertadas=0, perder=0;
+    while(cantBombasAcertadas!=BOMBAS && perder!=1){
         mostrarTablero(tablero);
-        realizarJugada(tablero, posBombas, cantBombasAcertadas);
+        realizarJugada(tablero, posBombas, &cantBombasAcertadas, &perder);
+    }
+        visualizarBombas(tablero);
+        mostrarTablero(tablero);
+    if(cantBombasAcertadas==BOMBAS)
+        printf("FELICITACIONES, GANASTE !!!\n ");
+    else
+        printf(" PERDISTE, FIN DEL JUEGO \n");
+
+}
+
+void visualizarBombas(casilla tablero[][LADOS]){
+    for(int i=0; i<LADOS; i++){
+        for(int j=0; j<LADOS; j++){
+            if(tablero[i][j].esBomba)
+                tablero[i][j].esVisible=1;
+        }
     }
 }
 
@@ -93,14 +145,17 @@ void imprimirTitulo(){
     printf("--------------------\n");
     printf("|    BUSCA MINAS   |\n");
     printf("--------------------\n");
-    printf("1 para excavar, 2 para bandera. Luego indicar fila y columna\n");
+    printf("0 para excavar, 1 para poner/sacar bandera. Luego indicar fila y columna\n\n");
 
 }
 
 void mostrarTablero(casilla tablero[][LADOS]){
     limpiar_pantalla();
     imprimirTitulo();
+
+    printf("\tA\tB\tC\tD\tE\tF\tG\tH\n\n");
     for(int i=0; i<LADOS; i++){
+        printf("%d\t", i);
         for(int j=0; j<LADOS; j++){
             if(tablero[i][j].esVisible){
                 if(tablero[i][j].esBomba)
