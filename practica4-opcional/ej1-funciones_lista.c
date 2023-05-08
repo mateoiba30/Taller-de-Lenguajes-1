@@ -9,44 +9,49 @@ struct nodo{//DEBO PONERLE NOMBRE AL INICIO
 
 typedef struct nodo nodo;
 typedef nodo* lista;
+typedef struct{
+    lista l;
+    int cont;
+}SLista;//tmb puedo haecr algo de este estilo
 
-void inicializarLista(lista*);
-void eliminarTodo(lista*);
-void agregarInicio(lista*, int );
-void agregarFinal(lista*, int );
-int tamanio(lista);
-void imprimirLista(lista);
-void insertarOrdenado( lista*, int);
-void liberarLista(lista*);
+void inicializarLista(SLista*);
+void eliminarTodo(SLista*);
+void agregarInicio(SLista*, int );
+void agregarFinal(SLista*, int );
+int tamanio(SLista);
+void imprimirLista(SLista);
+void insertarOrdenado( SLista*, int);
+void liberarLista(SLista*);
 
 int main(){
 
     int n;
-    lista l;
-    inicializarLista(&l);
+    SLista l1;
+    inicializarLista(&l1);
 
     for(int i=0; i<5; i++){
         printf("ingrese un numero: ");
         scanf("%d", &n);
-        agregarFinal(&l, n);
+        agregarFinal(&l1, n);
     }
 
-    insertarOrdenado(&l, 6);
+    insertarOrdenado(&l1, 6);
     printf("nueva lista: ");
-    imprimirLista(l);
+    imprimirLista(l1);
   
-    printf("tamanio: %d \n",  tamanio(l)); 
-    liberarLista(&l);
+    printf("tamanio: %d \n",  tamanio(l1)); 
+    liberarLista(&l1);
     return 0;
 }
 
-void insertarOrdenado( lista* l, int dato){
+void insertarOrdenado( SLista* l, int dato){
+    (*l).cont++;
     lista nue, ant, act;
     nue=(lista)malloc(sizeof(nodo));//reservo mem
     nue->dato=dato;
 
-    act=(*l);
-    ant=(*l);
+    act=(*l).l;
+    ant=(*l).l;
 
     while(act!=NULL && act->dato < dato){
         ant=act;
@@ -55,46 +60,49 @@ void insertarOrdenado( lista* l, int dato){
 
     nue->sig=act;
 
-    if((*l)==act)
-        (*l)=nue;
+    if((*l).l==act)
+        (*l).l=nue;
     else
         ant->sig =nue;
 
 }
 
-void inicializarLista(lista* l){
-    (*l)=NULL;
+void inicializarLista(SLista* l){
+    (*l).l=NULL;
+    (*l).cont=0;
 }
 
-void eliminarTodo(lista* l){
+void eliminarTodo(SLista* l){
     lista aux;//no perder el inicio de la lista para borrar
 
-    while((*l)!=NULL){
-        aux=(*l);
-        (*l)=(*l)->sig;//siempre voy borrando el 1ro de la lista
+    for(int i=0; i<(*l).cont; i++){
+        aux=(*l).l;
+        (*l).l=(*l).l->sig;//siempre voy borrando el 1ro de la lista
         free(aux);
 
     }
 
 }
 
-void agregarInicio(lista* l, int dato){
+void agregarInicio(SLista* l, int dato){
+    (*l).cont++;
     lista act;
     act=(lista)malloc(sizeof(nodo));//reservo mem
     act->dato=dato;
-    act->sig=(*l);
-    (*l)=act;
+    act->sig=(*l).l;
+    (*l).l=act;
 
 }
 
-void agregarFinal(lista* l, int dato){
-    lista act, aux=(*l);
+void agregarFinal(SLista* l, int dato){
+    (*l).cont++;
+    lista act, aux=(*l).l;
     act=(lista)malloc(sizeof(nodo));
     act->dato=dato;
     act->sig=NULL;
 
-    if((*l)==NULL){
-        (*l)=act;
+    if((*l).l==NULL){
+        (*l).l=act;
     }
     else{
     while(aux->sig!=NULL){
@@ -105,24 +113,25 @@ void agregarFinal(lista* l, int dato){
 
 }
 
-int tamanio(lista l){
-    return sizeof(l);
+int tamanio(SLista l){
+    return l.cont;
 }
 
-void imprimirLista(lista l){
-    lista aux=l;
-        while(aux!=NULL){
+void imprimirLista(SLista l){
+    lista aux=l.l;
+        for(int i=0; i<l.cont; i++){
             printf("%d, ",aux->dato);
             aux=aux->sig;
     }
 
 }
 
-void liberarLista(lista* l){
+void liberarLista(SLista* l){
     lista aux;
-    while( (*l)){
-        aux=(*l);
-        (*l)=(*l)->sig;
+    for(int i=0; i<(*l).cont; i++){
+        aux=(*l).l;
+        (*l).l=(*l).l->sig;
         free(aux);
     }
+    (*l).cont=0;
 }
