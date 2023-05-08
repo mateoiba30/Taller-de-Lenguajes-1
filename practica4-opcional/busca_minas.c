@@ -72,50 +72,6 @@ int main(){
     return 0;
 }
 
-// void excavarRecursivo(casilla tablero[][LADOS], int i, int j){
-//     if(j<LADOS-1){
-//         tablero[i][j+1].esVisible=1;
-//         // if(tablero[i][j+1].bombasVecinas==0 && tablero[i])
-//         //     excavarRecursivo(tablero, i, j+1);
-//     }
-//     if(j>0){
-//         tablero[i][j-1].esVisible=1;
-//         // if(tablero[i][j-1].bombasVecinas==0)
-//         //     excavarRecursivo(tablero,i,j-1);
-//     }
-//     if(i>0){
-//         tablero[i-1][j].esVisible=1;
-//         // if(tablero[i-1][j].bombasVecinas==0)
-//             // excavarRecursivo(tablero, i-1,j);
-//         if(j>0){
-//            tablero[i-1][j-1].esVisible=1;
-//             // if(tablero[i-1][j-1].bombasVecinas==0)
-//                 // excavarRecursivo(tablero, i-1,j-1);
-//         }
-//         if(j<LADOS-1){
-//             tablero[i-1][j+1].esVisible=1;
-//             // if(tablero[i-1][j+1].bombasVecinas==0)
-//                 // excavarRecursivo(tablero, i-1,j+1);
-//         }
-//     }
-//     if(i<LADOS -1){
-//         tablero[i+1][j].esVisible=1;
-//         // if(tablero[i+1][j].bombasVecinas==0)
-//             // excavarRecursivo(tablero, i+1,j);
-//         if(j>0){
-//             tablero[i+1][j-1].esVisible=1;
-//             // if(tablero[i+1][j-1].bombasVecinas==0)
-//                 // excavarRecursivo(tablero, i+1,j-1);
-//         }
-//         if(j<LADOS-1){
-//             tablero[i+1][j+1].esVisible=1;
-//             // if(tablero[i+1][j+1].bombasVecinas==0)
-//                 // excavarRecursivo(tablero, i+1,j+1);
-//         }
-//     }
-// }
-
-
 void excavarRecursivo(casilla tablero[][LADOS], int i, int j){
     
     for(int k=i-1; k<=i+1; k++){
@@ -261,26 +217,16 @@ void mostrarTablero(casilla tablero[][LADOS]){
 
 void contarBombasVecinas(casilla tablero[][LADOS]){
     for(int i=0; i<LADOS; i++){
-        for(int j=0; j<LADOS; j++){
-            if(j<LADOS-1)
-                tablero[i][j].bombasVecinas+=tablero[i][j+1].esBomba;
-            if(j>0)
-                tablero[i][j].bombasVecinas+=tablero[i][j-1].esBomba;
+        for(int j=0; j<LADOS; j++){//recorro todo tablero
 
-            if(i>0){
-                tablero[i][j].bombasVecinas+=tablero[i-1][j].esBomba;//nop poner else porque debo comparar todos los casos
-                if(j>0)
-                    tablero[i][j].bombasVecinas+=tablero[i-1][j-1].esBomba;
-                if(j<LADOS-1)
-                    tablero[i][j].bombasVecinas+=tablero[i-1][j+1].esBomba;
+            for(int k=i-1; k<=i+1; k++){
+                for(int l=j-1; l<=j+1; l++){
+                    if(k<LADOS && k>=0 && l<LADOS && l>=0){//CHEQUEO LOS HERMANOS EXTERIORES ESTEN EN CONDICIONES PARA MANDARLOS
+                        tablero[i][j].bombasVecinas+=tablero[k][l].esBomba;     
+                    }
+                }
             }
-            if(i<LADOS -1){
-                tablero[i][j].bombasVecinas+=tablero[i+1][j].esBomba;
-                if(j>0)
-                    tablero[i][j].bombasVecinas+=tablero[i+1][j-1].esBomba;
-                if(j<LADOS-1)
-                    tablero[i][j].bombasVecinas+=tablero[i+1][j+1].esBomba;
-            }
+
         }
     }
 }
