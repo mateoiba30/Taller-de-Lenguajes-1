@@ -15,6 +15,8 @@
 //j es para columna
 //1 para verdadero
 
+typedef enum {CORRECTO, PERDER, COLUMNA_INV, FILA_INV, ACCION_INV, CASILLA_REP} estados;
+
 typedef enum {EXCAVAR, BANDERA} acciones;
 
 typedef enum {A, B, C, D, E, F, G, H} columnas;
@@ -38,7 +40,7 @@ typedef struct{
 
 }punto2D;
 
-void realizarJugada(casilla[][LADOS], punto2D[], int*, int *);
+void realizarJugada(casilla[][LADOS], punto2D[], int*, estados*);
 void inicioJuego(casilla[][LADOS], punto2D[]);
 void visualizarBombas(casilla[][LADOS]);
 
@@ -69,15 +71,28 @@ int main(){
     return 0;
 }
 
-void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBombasAcertadas, int *perder){
+void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBombasAcertadas, estados *estado){
     int fila, columna, accion;
+    *estado=CORRECTO;
     char columna_char;
 
-    printf("->");
+    printf("accion ->");
     scanf("%d",&accion);
-    printf("->");
+
+    if(accion!=0 && accion!=1){
+        *estado=ACCION_INV;
+        return;
+    }
+
+    printf("fila   ->");
     scanf("%d",&fila);
-    printf("->");
+
+    if(fila>=LADOS || fila <0){
+        *estado=FILA_INV;
+        return;
+    }
+
+    printf("columna->");
     scanf(" %c", &columna_char);//PONER UN ESPACIO ANTES DE %C Y LUEGO GETCHAR PARA ELER SIN ERRORES!!!
     getchar();
 
@@ -90,13 +105,18 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
         case 'F':columna=F; break;
         case 'G':columna=G; break;
         case 'H':columna=H; break;
+        default: (*estado)=COLUMNA_INV; return; break;
     }
 
     if(accion==EXCAVAR){
         if(tablero[fila][columna].esBomba)
-            (*perder)=1;
-        else
-            tablero[fila][columna].esVisible=1; 
+            (*estado)=PERDER;
+        else{
+            if(tablero[fila][columna].esVisible)
+                *estado=CASILLA_REP;           
+            else
+                tablero[fila][columna].esVisible=1; 
+        }
     }
     else{
         tablero[fila][columna].tieneBandera^=1;//cambio el estado con XOR
@@ -109,10 +129,17 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
 }
 
 void inicioJuego(casilla tablero[][LADOS], punto2D posBombas[]){
-    int cantBombasAcertadas=0, perder=0;
-    while(cantBombasAcertadas!=BOMBAS && perder!=1){
+    int cantBombasAcertadas=0, perder=0, equivocado;
+    estados estado=CORRECTO;
+    while(cantBombasAcertadas!=BOMBAS && estado!=PERDER){
         mostrarTablero(tablero);
-        realizarJugada(tablero, posBombas, &cantBombasAcertadas, &perder);
+        switch(estado){
+            case CASILLA_REP: printf("CASILLA REPETIDA\n"); break;//muestro desp de actualizar
+            case FILA_INV: printf("FILA INVALIDA\n"); break;
+            case COLUMNA_INV: printf("COLUMNA INVALIDA\n"); break;
+            case ACCION_INV: printf("accion invalida\n"); break;
+        }
+        realizarJugada(tablero, posBombas, &cantBombasAcertadas, &estado);
     }
         visualizarBombas(tablero);
         mostrarTablero(tablero);
@@ -144,7 +171,7 @@ void imprimirTitulo(){
     printf("--------------------\n");
     printf("|    BUSCA MINAS   |\n");
     printf("--------------------\n");
-    printf("0 para excavar, 1 para poner/sacar bandera. Luego indicar fila y columna\n\n");
+    printf("0 para excavar, 1 para poner/sacar bandera\n\n");
 
 }
 
