@@ -31,28 +31,29 @@ typedef struct{//HACERLOS CAMPOS DE BITS?
     int esBomba;
     int bombasVecinas;
     int esVisible;
-
 }casilla;
 
 typedef struct{
     int fila;
     int columna;
-
 }punto2D;
 
+//JUGAR
+void excavarRecursivo(casilla[][LADOS], int, int);
 void realizarJugada(casilla[][LADOS], punto2D[], int*, estados*);
 void inicioJuego(casilla[][LADOS], punto2D[]);
 void visualizarBombas(casilla[][LADOS]);
 
+//PANTALLA
 void limpiar_pantalla();
 void imprimirTitulo();
 void mostrarTablero(casilla[][LADOS]);
-
 void revelarTablero(casilla[][LADOS]);
+void imprimirPosBombas(punto2D[]);
+
+//INICIALIZAR
 void inicializarTablero(casilla[][LADOS], punto2D[]);
 void contarBombasVecinas(casilla[][LADOS]);
-
-void imprimirPosBombas(punto2D[]);
 void elegirBombas(punto2D[], int *);
 int buscarPunto(punto2D, punto2D[], int);
 
@@ -71,6 +72,49 @@ int main(){
     return 0;
 }
 
+void excavarRecursivo(casilla tablero[][LADOS], int i, int j){
+    if(j<LADOS-1){
+        tablero[i][j+1].esVisible=1;
+        // if(tablero[i][j+1].bombasVecinas==0)
+        //     excavarRecursivo(tablero, i, j+1);
+    }
+    if(j>0){
+        tablero[i][j-1].esVisible=1;
+        // if(tablero[i][j-1].bombasVecinas==0)
+        //     excavarRecursivo(tablero,i,j-1);
+    }
+    if(i>0){
+        tablero[i-1][j].esVisible=1;
+        // if(tablero[i-1][j].bombasVecinas==0)
+            // excavarRecursivo(tablero, i-1,j);
+        if(j>0){
+           tablero[i-1][j-1].esVisible=1;
+            // if(tablero[i-1][j-1].bombasVecinas==0)
+                // excavarRecursivo(tablero, i-1,j-1);
+        }
+        if(j<LADOS-1){
+            tablero[i-1][j+1].esVisible=1;
+            // if(tablero[i-1][j+1].bombasVecinas==0)
+                // excavarRecursivo(tablero, i-1,j+1);
+        }
+    }
+    if(i<LADOS -1){
+        tablero[i+1][j].esVisible=1;
+        // if(tablero[i+1][j].bombasVecinas==0)
+            // excavarRecursivo(tablero, i+1,j);
+        if(j>0){
+            tablero[i+1][j-1].esVisible=1;
+            // if(tablero[i+1][j-1].bombasVecinas==0)
+                // excavarRecursivo(tablero, i+1,j-1);
+        }
+        if(j<LADOS-1){
+            tablero[i+1][j+1].esVisible=1;
+            // if(tablero[i+1][j+1].bombasVecinas==0)
+                // excavarRecursivo(tablero, i+1,j+1);
+        }
+    }
+}
+
 void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBombasAcertadas, estados *estado){
     int fila, columna, accion;
     *estado=CORRECTO;
@@ -78,7 +122,6 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
 
     printf("accion ->");
     scanf("%d",&accion);
-
     if(accion!=0 && accion!=1){
         *estado=ACCION_INV;
         return;
@@ -86,7 +129,6 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
 
     printf("fila   ->");
     scanf("%d",&fila);
-
     if(fila>=LADOS || fila <0){
         *estado=FILA_INV;
         return;
@@ -95,7 +137,6 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
     printf("columna->");
     scanf(" %c", &columna_char);//PONER UN ESPACIO ANTES DE %C Y LUEGO GETCHAR PARA ELER SIN ERRORES!!!
     getchar();
-
     switch(columna_char){
         case 'A':columna=A; break;
         case 'B':columna=B; break;
@@ -114,8 +155,11 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
         else{
             if(tablero[fila][columna].esVisible)
                 *estado=CASILLA_REP;           
-            else
+            else{
                 tablero[fila][columna].esVisible=1; 
+                if(tablero[fila][columna].bombasVecinas==0)
+                    excavarRecursivo(tablero, fila, columna);
+            }
         }
     }
     else{
