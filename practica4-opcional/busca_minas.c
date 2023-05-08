@@ -76,11 +76,13 @@ void excavarRecursivo(casilla tablero[][LADOS], int i, int j){
     
     for(int k=i-1; k<=i+1; k++){
         for(int l=j-1; l<=j+1; l++){
-            if(k<LADOS && k>=0 && l<LADOS && l>=0 && tablero[k][l].esVisible==0){//CHEQUEO LOS HERMANOS EXTERIORES ESTEN EN CONDICIONES PARA MANDARLOS
+
+            if(k<LADOS && k>=0 && l<LADOS && l>=0 && tablero[k][l].esVisible==0/* && !(k==i && l==j)*/){//CHEQUEO LOS HERMANOS EXTERIORES ESTEN EN CONDICIONES PARA MANDARLOS
                 tablero[i][j].esVisible=1;
                 if(tablero[k][l].bombasVecinas==0)
                     excavarRecursivo(tablero, k, l);        
             }
+
         }
     }
 }

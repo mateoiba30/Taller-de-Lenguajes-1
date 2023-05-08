@@ -1,1 +1,1 @@
- && tablero[k][l].esVisible==0
+
