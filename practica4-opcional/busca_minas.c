@@ -72,45 +72,57 @@ int main(){
     return 0;
 }
 
+// void excavarRecursivo(casilla tablero[][LADOS], int i, int j){
+//     if(j<LADOS-1){
+//         tablero[i][j+1].esVisible=1;
+//         // if(tablero[i][j+1].bombasVecinas==0 && tablero[i])
+//         //     excavarRecursivo(tablero, i, j+1);
+//     }
+//     if(j>0){
+//         tablero[i][j-1].esVisible=1;
+//         // if(tablero[i][j-1].bombasVecinas==0)
+//         //     excavarRecursivo(tablero,i,j-1);
+//     }
+//     if(i>0){
+//         tablero[i-1][j].esVisible=1;
+//         // if(tablero[i-1][j].bombasVecinas==0)
+//             // excavarRecursivo(tablero, i-1,j);
+//         if(j>0){
+//            tablero[i-1][j-1].esVisible=1;
+//             // if(tablero[i-1][j-1].bombasVecinas==0)
+//                 // excavarRecursivo(tablero, i-1,j-1);
+//         }
+//         if(j<LADOS-1){
+//             tablero[i-1][j+1].esVisible=1;
+//             // if(tablero[i-1][j+1].bombasVecinas==0)
+//                 // excavarRecursivo(tablero, i-1,j+1);
+//         }
+//     }
+//     if(i<LADOS -1){
+//         tablero[i+1][j].esVisible=1;
+//         // if(tablero[i+1][j].bombasVecinas==0)
+//             // excavarRecursivo(tablero, i+1,j);
+//         if(j>0){
+//             tablero[i+1][j-1].esVisible=1;
+//             // if(tablero[i+1][j-1].bombasVecinas==0)
+//                 // excavarRecursivo(tablero, i+1,j-1);
+//         }
+//         if(j<LADOS-1){
+//             tablero[i+1][j+1].esVisible=1;
+//             // if(tablero[i+1][j+1].bombasVecinas==0)
+//                 // excavarRecursivo(tablero, i+1,j+1);
+//         }
+//     }
+// }
+
 void excavarRecursivo(casilla tablero[][LADOS], int i, int j){
-    if(j<LADOS-1){
-        tablero[i][j+1].esVisible=1;
-        // if(tablero[i][j+1].bombasVecinas==0)
-        //     excavarRecursivo(tablero, i, j+1);
-    }
-    if(j>0){
-        tablero[i][j-1].esVisible=1;
-        // if(tablero[i][j-1].bombasVecinas==0)
-        //     excavarRecursivo(tablero,i,j-1);
-    }
-    if(i>0){
-        tablero[i-1][j].esVisible=1;
-        // if(tablero[i-1][j].bombasVecinas==0)
-            // excavarRecursivo(tablero, i-1,j);
-        if(j>0){
-           tablero[i-1][j-1].esVisible=1;
-            // if(tablero[i-1][j-1].bombasVecinas==0)
-                // excavarRecursivo(tablero, i-1,j-1);
-        }
-        if(j<LADOS-1){
-            tablero[i-1][j+1].esVisible=1;
-            // if(tablero[i-1][j+1].bombasVecinas==0)
-                // excavarRecursivo(tablero, i-1,j+1);
-        }
-    }
-    if(i<LADOS -1){
-        tablero[i+1][j].esVisible=1;
-        // if(tablero[i+1][j].bombasVecinas==0)
-            // excavarRecursivo(tablero, i+1,j);
-        if(j>0){
-            tablero[i+1][j-1].esVisible=1;
-            // if(tablero[i+1][j-1].bombasVecinas==0)
-                // excavarRecursivo(tablero, i+1,j-1);
-        }
-        if(j<LADOS-1){
-            tablero[i+1][j+1].esVisible=1;
-            // if(tablero[i+1][j+1].bombasVecinas==0)
-                // excavarRecursivo(tablero, i+1,j+1);
+    printf("entro\n");
+    for(int k=i-1; k<=i+1; k++){
+        for(int l=j-1; l<=j+1; l++){
+            tablero[k][l].esVisible=1;
+            if(k<LADOS && k>=0 && l<LADOS && l>=0 && tablero[k][l].bombasVecinas==0 && tablero[k][l].esVisible==0){        
+                excavarRecursivo(tablero, k, l);
+            }
         }
     }
 }
