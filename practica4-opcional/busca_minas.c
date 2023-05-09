@@ -181,9 +181,10 @@ void revelarBombas(casilla tablero[][LADOS]){
     limpiar_pantalla();
     imprimirTitulo();
 
-    printf("\tA\tB\tC\tD\tE\tF\tG\tH\n\n");
+    printf("\t\tA\tB\tC\tD\tE\tF\tG\tH\n\n");
+    printf("\t----------------------------------------------------------------------\n\t|\n\t|\n");
     for(int i=0; i<LADOS; i++){
-        printf("%d\t", i);
+        printf("%d\t|\t", i);
         for(int j=0; j<LADOS; j++){
             if(tablero[i][j].esVisible || tablero[i][j].esBomba){
                 if(tablero[i][j].esBomba)
@@ -198,7 +199,7 @@ void revelarBombas(casilla tablero[][LADOS]){
                     printf("%c \t", CHAR_OCULTA);
             }           
         }
-        printf("\n\n\n");
+        printf("\n\t|\n\t|\n");
     }
 }
 
