@@ -47,7 +47,7 @@ void revelarBombas(casilla[][LADOS]);
 //PANTALLA
 void limpiar_pantalla();
 void imprimirTitulo();
-void mostrarTablero(casilla[][LADOS], int, int);
+void mostrarTablero(casilla[][LADOS], int);
 void revelarTablero(casilla[][LADOS]);
 void imprimirPosBombas(punto2D[]);
 
@@ -159,7 +159,7 @@ void inicioJuego(casilla tablero[][LADOS], punto2D posBombas[]){
     int cantBombasAcertadas=0, perder=0, equivocado, contadorBanderas=0;
     estados estado=CORRECTO;
     while(estado!=GANAR && estado!=PERDER){//si una no se cumple, termino
-        mostrarTablero(tablero, contadorBanderas,cantBombasAcertadas);
+        mostrarTablero(tablero, contadorBanderas);
         switch(estado){
             case CASILLA_REP: printf("CASILLA REPETIDA\n"); break;//muestro desp de actualizar
             case FILA_INV: printf("FILA INVALIDA\n"); break;
@@ -218,7 +218,7 @@ void imprimirTitulo(){
 
 }
 
-void mostrarTablero(casilla tablero[][LADOS], int contadorBanderas, int cantBombasAcertadas){
+void mostrarTablero(casilla tablero[][LADOS], int contadorBanderas){
     limpiar_pantalla();
     imprimirTitulo();
 
@@ -241,7 +241,7 @@ void mostrarTablero(casilla tablero[][LADOS], int contadorBanderas, int cantBomb
         }
         printf("\n\n\n");
     }
-    printf("Banderas colocadas: %d %d\n", contadorBanderas, cantBombasAcertadas);
+    printf("Banderas colocadas: %d\n", contadorBanderas);
 }
 
 void contarBombasVecinas(casilla tablero[][LADOS]){
