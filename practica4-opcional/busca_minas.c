@@ -211,10 +211,10 @@ void limpiar_pantalla(){
 }
 
 void imprimirTitulo(){
-    printf("--------------------\n");
-    printf("|    BUSCA MINAS   |\n");
-    printf("--------------------\n");
-    printf("0 para excavar, 1 para poner/sacar bandera\n\n");
+    printf("\t\t\t\t--------------------\n");
+    printf("\t\t\t\t|    BUSCA MINAS   |\n");
+    printf("\t\t\t\t--------------------\n");
+    printf("\t\t\t0 para excavar, 1 para poner/sacar bandera\n\n\n\n");
 
 }
 
@@ -222,9 +222,10 @@ void mostrarTablero(casilla tablero[][LADOS], int contadorBanderas){
     limpiar_pantalla();
     imprimirTitulo();
 
-    printf("\tA\tB\tC\tD\tE\tF\tG\tH\n\n");
+    printf("\t\tA\tB\tC\tD\tE\tF\tG\tH\n\n");
+    printf("\t----------------------------------------------------------------------\n\t|\n\t|\n");
     for(int i=0; i<LADOS; i++){
-        printf("%d\t", i);
+        printf("%d\t|\t", i);
         for(int j=0; j<LADOS; j++){
             if(tablero[i][j].esVisible){
                 if(tablero[i][j].esBomba)
@@ -239,9 +240,9 @@ void mostrarTablero(casilla tablero[][LADOS], int contadorBanderas){
                     printf("%c \t", CHAR_OCULTA);
             }           
         }
-        printf("\n\n\n");
+        printf("\n\t|\n\t|\n");
     }
-    printf("Banderas colocadas: %d\n", contadorBanderas);
+    printf("\nBanderas colocadas: %d\n", contadorBanderas);
 }
 
 void contarBombasVecinas(casilla tablero[][LADOS]){
