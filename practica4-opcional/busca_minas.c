@@ -90,9 +90,9 @@ void excavarRecursivo(casilla tablero[][LADOS], int i, int j){
 
 
 void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBombasAcertadas, estados *estado, int* contadorBanderas){
-    int fila, columna, accion;
+    int fila, accion;
     *estado=CORRECTO;
-    char columna_char;
+    char columna;
 
     // usleep(1000000); // pa debuguear
 
@@ -111,22 +111,11 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
     }
 
     printf("columna->");
-    scanf(" %c", &columna_char);//PONER UN ESPACIO ANTES DE %C Y LUEGO GETCHAR PARA ELER SIN ERRORES!!!
+    scanf(" %c", &columna);//PONER UN ESPACIO ANTES DE %C Y LUEGO GETCHAR PARA ELER SIN ERRORES!!!
     getchar();
 
-    printf("%x %x %x \n", accion, fila, columna_char);
-
-    switch(columna_char){
-        case 'A':columna=A; break;
-        case 'B':columna=B; break;
-        case 'C':columna=C; break;
-        case 'D':columna=D; break;
-        case 'E':columna=E; break;
-        case 'F':columna=F; break;
-        case 'G':columna=G; break;
-        case 'H':columna=H; break;
-        default: (*estado)=COLUMNA_INV; return; break;
-    }
+    // printf("%x %x %x \n", accion, fila, columna_char); // pa debuguear
+    columna-='A';//paso de caracter a numero
 
     if(accion==EXCAVAR){
         if(tablero[fila][columna].esBomba)
