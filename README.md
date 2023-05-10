@@ -1,27 +1,11 @@
 # TdL1
 
 Este repositorio contiene las prácticas realizadas en la materia **Taller de Lenguajes 1**.
+Módulo 1: uniones, enumerativos, operadores de bits, estructuras, arreglos, punteros, funciones, etc.
+Módulo 2: redireccionamiento, argumentos main, directivas, archivos, memoria dinámica, etc.
 
 ## Prácticas
 
-- [practica 1](practica%201/)
+- [modulo 1](mod1%20estatico/)
 
-- [practica 1 extra](practica%201%20extra/)
-
-- [practica 2](practica%202/)
-
-- [practica 2 opcional - teoria](practica%202%20opcional-%20teoria/)
-
-- [practica 3](practica%203/)
-
-- [practica 4](practica4/)
-
-- [practica 4 opcional](practica4-opcional/)
-
-
-
-Cada práctica incluye su correspondiente archivo de código fuente y un archivo README que explica los objetivos y los pasos seguidos para completar la práctica.
-
-## Licencia
-
-Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+- [modulo 2](mod2%20dinamico/)
