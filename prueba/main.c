@@ -1,9 +1,20 @@
 #include <stdio.h>
+#include <stdlib.h>
+
+void reservar(int*);
 
 int main(){
-int a=5, b=6, c=7;
-a=b=c;
-printf("%d %d %d", a, b, c);
+int *vector;
 
+// vector=malloc(4*sizeof(int));
+// free(vector);
+reservar(vector);
+printf("%d", vector[3]);
+
+free(vector);
 return 0;
+}
+
+void reservar(int* vector){
+    vector=malloc(4*sizeof(int));
 }
