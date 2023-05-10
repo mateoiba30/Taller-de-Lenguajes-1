@@ -22,11 +22,6 @@ typedef enum {EXCAVAR, BANDERA} acciones;
 
 typedef enum {A, B, C, D, E, F, G, H} columnas;
 
-typedef enum  {sup1, sup2, sup3, izq, der, pos1, pos2, pos3 } enumCasillasVecinas;
-// 0 1 2
-// 3 x 4
-// 5 6 7
-
 typedef struct{//HACERLOS CAMPOS DE BITS?
     int tieneBandera;
     int esBomba;
