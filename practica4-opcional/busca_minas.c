@@ -1,4 +1,5 @@
 #include <stdio.h>
+// #include <unistd.h> //sirve para hacer delays en microsegundos
 #include <stdlib.h>
 #ifdef _WIN32
 #include<windows.h>
@@ -59,7 +60,7 @@ int buscarPunto(punto2D, punto2D[], int);
 
 int main(){
 
-    // srand(time(NULL));  //para probar codigo elijo pseudoaleatoriamiente
+    srand(time(NULL));  //para probar codigo elijo pseudoaleatoriamiente
     casilla tablero[LADOS][LADOS];
     int dimlBombas=0;//diml es cuantos voy cargando
     punto2D posBombas[BOMBAS];
@@ -73,14 +74,14 @@ int main(){
 }
 
 void excavarRecursivo(casilla tablero[][LADOS], int i, int j){
-    
+
     for(int k=i-1; k<=i+1; k++){
         for(int l=j-1; l<=j+1; l++){
 
-            if(k<LADOS && k>=0 && l<LADOS && l>=0 && tablero[k][l].esVisible==0/* && !(k==i && l==j)*/){//CHEQUEO LOS HERMANOS EXTERIORES ESTEN EN CONDICIONES PARA MANDARLOS
-                tablero[i][j].esVisible=1;
-                if(tablero[k][l].bombasVecinas==0)
-                    excavarRecursivo(tablero, k, l);        
+            if(k<LADOS && k>=0 && l<LADOS && l>=0 && tablero[k][l].esVisible==0){//CHEQUEO LOS HERMANOS EXTERIORES ESTEN EN CONDICIONES PARA MANDARLOS
+                tablero[k][l].esVisible=1;
+                if(tablero[k][l].bombasVecinas==0)      //!(k==i && l==j) es como preguntar si es visible
+                    excavarRecursivo(tablero, k, l);
             }
 
         }
@@ -92,6 +93,8 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
     int fila, columna, accion;
     *estado=CORRECTO;
     char columna_char;
+
+    // usleep(1000000); // pa debuguear
 
     printf("accion ->");
     scanf("%d",&accion);
@@ -110,6 +113,9 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
     printf("columna->");
     scanf(" %c", &columna_char);//PONER UN ESPACIO ANTES DE %C Y LUEGO GETCHAR PARA ELER SIN ERRORES!!!
     getchar();
+
+    printf("%x %x %x \n", accion, fila, columna_char);
+
     switch(columna_char){
         case 'A':columna=A; break;
         case 'B':columna=B; break;
@@ -127,9 +133,9 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
             (*estado)=PERDER;
         else{
             if(tablero[fila][columna].esVisible)
-                *estado=CASILLA_REP;           
+                *estado=CASILLA_REP;
             else{
-                tablero[fila][columna].esVisible=1; 
+                tablero[fila][columna].esVisible=1;
                 if(tablero[fila][columna].bombasVecinas==0)
                     excavarRecursivo(tablero, fila, columna);
             }
@@ -142,12 +148,12 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
         }
         else{
             tablero[fila][columna].tieneBandera=1;
-            (*contadorBanderas)++;           
+            (*contadorBanderas)++;
         }
         if(tablero[fila][columna].esBomba){
             if(tablero[fila][columna].tieneBandera)
                 (*cantBombasAcertadas)++;
-            else 
+            else
                 (*cantBombasAcertadas)--;
         }
         if(*cantBombasAcertadas==BOMBAS && *contadorBanderas==BOMBAS)//para ganar no hay que poner banderas demás, sinó re fácil
@@ -197,7 +203,7 @@ void revelarBombas(casilla tablero[][LADOS]){
                     printf("%c \t", CHAR_BANDERA);
                 else
                     printf("%c \t", CHAR_OCULTA);
-            }           
+            }
         }
         printf("\n\t|\n\t|\n");
     }
@@ -239,7 +245,7 @@ void mostrarTablero(casilla tablero[][LADOS], int contadorBanderas){
                     printf("%c \t", CHAR_BANDERA);
                 else
                     printf("%c \t", CHAR_OCULTA);
-            }           
+            }
         }
         printf("\n\t|\n\t|\n");
     }
@@ -253,7 +259,7 @@ void contarBombasVecinas(casilla tablero[][LADOS]){
             for(int k=i-1; k<=i+1; k++){
                 for(int l=j-1; l<=j+1; l++){
                     if(k<LADOS && k>=0 && l<LADOS && l>=0){//CHEQUEO LOS HERMANOS EXTERIORES ESTEN EN CONDICIONES PARA MANDARLOS
-                        tablero[i][j].bombasVecinas+=tablero[k][l].esBomba;     
+                        tablero[i][j].bombasVecinas+=tablero[k][l].esBomba;
                     }
                 }
             }
@@ -286,7 +292,7 @@ void inicializarTablero(casilla tablero[][LADOS], punto2D posBombas[]){
             tablero[i][j].tieneBandera=0;
             tablero[i][j].esVisible=0;
             tablero[i][j].bombasVecinas=0;
-            
+
         }
     }
 }
