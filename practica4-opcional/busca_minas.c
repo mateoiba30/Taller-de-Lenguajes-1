@@ -16,7 +16,7 @@
 //j es para columna
 //1 para verdadero
 
-typedef enum {CORRECTO, PERDER, COLUMNA_INV, FILA_INV, ACCION_INV, CASILLA_REP, GANAR, TIENE_BANDERA} estados;
+typedef enum {CORRECTO, PERDER, COLUMNA_INV, FILA_INV, ACCION_INV, CASILLA_REP, GANAR, TIENE_BANDERA, YA_EXCAVADA} estados;
 
 typedef enum {EXCAVAR, BANDERA} acciones;
 
