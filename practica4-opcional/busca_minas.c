@@ -4,7 +4,7 @@
 #ifdef _WIN32
 #include<windows.h>
 #endif
-// #include <time.h> //para probar codigo elijo pseudoaleatoriamiente
+#include <time.h> //para probar codigo elijo pseudoaleatoriamiente
 
 #define BOMBAS 10
 #define LADOS 8
@@ -16,7 +16,7 @@
 //j es para columna
 //1 para verdadero
 
-typedef enum {CORRECTO, PERDER, COLUMNA_INV, FILA_INV, ACCION_INV, CASILLA_REP, GANAR} estados;
+typedef enum {CORRECTO, PERDER, COLUMNA_INV, FILA_INV, ACCION_INV, CASILLA_REP, GANAR, TIENE_BANDERA} estados;
 
 typedef enum {EXCAVAR, BANDERA} acciones;
 
@@ -135,6 +135,10 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
             if(tablero[fila][columna].esVisible)
                 *estado=CASILLA_REP;
             else{
+                if(tablero[fila][columna].tieneBandera){//si tiene bandera y quiero excavar, le saco la bandera
+                    *estado=TIENE_BANDERA;
+                    return;
+                }
                 tablero[fila][columna].esVisible=1;
                 if(tablero[fila][columna].bombasVecinas==0)
                     excavarRecursivo(tablero, fila, columna);
@@ -142,22 +146,27 @@ void realizarJugada(casilla tablero[][LADOS], punto2D posBombas[], int* cantBomb
         }
     }
     else{//poner bandera
-        if(tablero[fila][columna].tieneBandera){
-            tablero[fila][columna].tieneBandera=0;
-            (*contadorBanderas)--;
+        if(tablero[fila][columna].esVisible){//si ya excavé, no puedo poner bandera
+                *estado=CASILLA_REP;
         }
         else{
-            tablero[fila][columna].tieneBandera=1;
-            (*contadorBanderas)++;
+            if(tablero[fila][columna].tieneBandera){
+                tablero[fila][columna].tieneBandera=0;
+                (*contadorBanderas)--;
+            }
+            else{
+                tablero[fila][columna].tieneBandera=1;
+                (*contadorBanderas)++;
+            }
+            if(tablero[fila][columna].esBomba){
+                if(tablero[fila][columna].tieneBandera)
+                    (*cantBombasAcertadas)++;
+                else
+                    (*cantBombasAcertadas)--;
+            }
+            if(*cantBombasAcertadas==BOMBAS && *contadorBanderas==BOMBAS)//para ganar no hay que poner banderas demás, sinó re fácil
+                *estado=GANAR;
         }
-        if(tablero[fila][columna].esBomba){
-            if(tablero[fila][columna].tieneBandera)
-                (*cantBombasAcertadas)++;
-            else
-                (*cantBombasAcertadas)--;
-        }
-        if(*cantBombasAcertadas==BOMBAS && *contadorBanderas==BOMBAS)//para ganar no hay que poner banderas demás, sinó re fácil
-            *estado=GANAR;
     }
 }
 
@@ -170,7 +179,8 @@ void inicioJuego(casilla tablero[][LADOS], punto2D posBombas[]){
             case CASILLA_REP: printf("CASILLA REPETIDA\n"); break;//muestro desp de actualizar
             case FILA_INV: printf("FILA INVALIDA\n"); break;
             case COLUMNA_INV: printf("COLUMNA INVALIDA\n"); break;
-            case ACCION_INV: printf("accion invalida\n"); break;
+            case ACCION_INV: printf("ACCION INVALIDA\n"); break;
+            case TIENE_BANDERA: printf("CASILLA CON BANDERA\n"); break;
         }
         realizarJugada(tablero, posBombas, &cantBombasAcertadas, &estado, &contadorBanderas);
     }
