@@ -12,15 +12,10 @@ int main(){
         printf ("Error\n");
         return 1;
     }
-    //cargo palabras
     fprintf(f,"mateo\njuan\npepe\n");
+    fclose(f);
 
     f = fopen("diccionario.txt", "r");
-    if (f == NULL){
-        printf ("Error\n");
-        return 1;
-    }
-
     printf("Ingrese una palabra a buscar (ZZZ para finalizar): ");
     scanf("%s", palabra);
     if(strcmp(palabra,"ZZZ")==0)
