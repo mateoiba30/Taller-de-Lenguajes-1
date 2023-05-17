@@ -7,15 +7,14 @@ int main(){
     int cod, fin=0, encontre=0;
     char palabra[255], palabra_act[255];
 
-    f = fopen("diccionario.txt", "w");
+    f = fopen("diccionario.txt", "w+");
     if (f == NULL){
         printf ("Error\n");
         return 1;
     }
     fprintf(f,"mateo\njuan\npepe\n");
-    fclose(f);
-
-    f = fopen("diccionario.txt", "r");
+    fseek(f, 0, SEEK_SET);//suando escribo me mueve el puntero del archivo
+    
     printf("Ingrese una palabra a buscar (ZZZ para finalizar): ");
     scanf("%s", palabra);
     if(strcmp(palabra,"ZZZ")==0)
