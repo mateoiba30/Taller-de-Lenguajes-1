@@ -17,23 +17,13 @@ int main(){
         return 1;
     }
     
-    int caracts=0, pos=0, fin=0;
-    while(!feof(f)){
-        pos++;
-        caracts++;
-        aux=fgetc(f);//cuando leo me estoy moviendo!!
+    int cant=0;
 
-        if(caracts==1000){
-            fread(buffer, sizeof(char), 1000, f);
-            fwrite(buffer, sizeof(char), 1000, nuevo);
-            caracts=0;
-            fin=pos;
-        }
+    cant=fread(buffer, sizeof(char), 1000, f);//devuelve la cant de caracteres que pudo eler correctamente
+    while(cant>0){
+        fwrite(buffer, sizeof(char), cant, nuevo);
+        cant=fread(buffer, sizeof(char), 1000, f);
     }
-    fseek(f, pos+1000, SEEK_SET);//al finalizar me queda algo más chico que un bloque de mil caracteres que debo imprimir
-
-    fread(buffer, sizeof(char), caracts, f);
-    fwrite(buffer, sizeof(char), caracts, nuevo);
 
     fclose(f);
     fclose(nuevo);

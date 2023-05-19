@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <float.h>//para poder hacer la línea 14
 #define COMPARACIONES 8
 enum {PROMEDIO, MINIMO, MAXIMO};
 
@@ -10,7 +11,7 @@ void leerDatos(FILE *, float[][COMPARACIONES], char[][255]);
 
 int main(){
     FILE *f, *reporte;
-    float mResultados[3][COMPARACIONES]={0};//datos a mostrar
+    float mResultados[MAXIMO+1][COMPARACIONES]={{0}, {FLT_MAX}, {FLT_MIN}};;//datos a mostrar, no los inicializo todos en cero porque sinó los maximos siemrpe serían ceros
     char inicio[COMPARACIONES][255];//si uso char * NO OLVIDAR DE RESERVAR MEMORIA!
 
     f = fopen("vinos.csv", "r");
@@ -34,7 +35,7 @@ int main(){
 
 void escribirArchivo(FILE *reporte, float mResultados[][COMPARACIONES], char inicio[][255]){
     fprintf(reporte, "Atributo \t\t\t");
-    for(int i=0; i<=COMPARACIONES; i++){
+    for(int i=0; i<COMPARACIONES; i++){
         fprintf(reporte, "|%s\t\t", inicio[i]);
     }
     fprintf(reporte, "\n");
@@ -72,10 +73,13 @@ void leerDatos(FILE *f, float mResultados[][COMPARACIONES], char inicio[][255]){
     }
     fgets(aux, 5, f);//están las comparaciones que quiero y una mas
     
-    while (!feof(f)){
-        for(int i=0; i<COMPARACIONES; i++){//la 1er vez que entra al while, hay error en la 1er iteracion del for
+    while (fscanf(f, "%f;", &vActual[0]) == 1) {//mejor hacerlo así para que no entre 1 vez demás al while
+        for (int i = 1; i < COMPARACIONES; i++)
             fscanf(f, "%f;", &vActual[i]);
-        }
+    // while (!feof(f)){
+    //     for(int i=0; i<COMPARACIONES; i++){//la 1er vez que entra al while, hay error en la 1er iteracion del for
+    //         fscanf(f, "%f;", &vActual[i]);
+    //     }
         fscanf(f, "%s", aux);//leo el tipo de vino
 
         for(int j=0; j<COMPARACIONES; j++){
