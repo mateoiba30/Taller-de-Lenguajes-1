@@ -1,2 +1,7 @@
-    for(int i=0; i<COMPARACIONES; i++)
-        fscanf(f, "%s;", inicio[i]);
+    reporte = fopen("reporte_vinos.txt", "w");
+    if (reporte == NULL){
+        printf ("Error en reporte\n");
+        return 1;
+    }
+    escribirArchivo(reporte, mResultados, inicio);
+    fclose(reporte);
