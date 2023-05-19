@@ -19,7 +19,8 @@ int main(){
     
     aux=fgetc(f);
     while(!feof(f)){
-        fprintf(nuevo, "%c", aux);
+        // fprintf(nuevo, "%c", aux); //anda igual de bien
+        fputc(aux, nuevo);
         aux=fgetc(f);
     }
     //siempre leer, y desp preguntar si llegué al final para no imprimir el end of file !!
