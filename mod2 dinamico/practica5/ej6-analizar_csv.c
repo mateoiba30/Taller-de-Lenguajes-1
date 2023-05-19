@@ -10,6 +10,7 @@ void  calcularPromedio(float[][COMPARACIONES], int);
 void leerDatos(FILE *, float[][COMPARACIONES], char[][255]);
 
 int main(){
+    
     FILE *f, *reporte;
     float mResultados[MAXIMO+1][COMPARACIONES]={{0}, {FLT_MAX}, {FLT_MIN}};;//datos a mostrar, no los inicializo todos en cero porque sinó los maximos siemrpe serían ceros
     char inicio[COMPARACIONES][255];//si uso char * NO OLVIDAR DE RESERVAR MEMORIA!
