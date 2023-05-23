@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 #define CANTTENISTAS 2
@@ -13,43 +14,75 @@ typedef struct{
 
 }Tenistas;
 
+int actualizarTenista(FILE *, char[], char[], int);
 void informarMejorRanking(FILE *, int);
 void cargarTenistas(Tenistas [], int, FILE *);
 void leerTenistas(Tenistas [], int);
 
 int main(){
+    int nuevoRanking;
+    char nombre[50], apellido[50];
     FILE *binario;
     Tenistas vectorTenistas[CANTTENISTAS];
 
     leerTenistas(vectorTenistas, CANTTENISTAS);
-
-    binario= fopen("tenistas.dat", "wb");
+    binario= fopen("tenistas.dat", "rb+");
     if(binario==NULL){
-        printf("Error en el archivo binario al escribir\n");
+        printf("Error en el archivo binario\n");
         return 1;
     }
     cargarTenistas(vectorTenistas, CANTTENISTAS, binario);
-    fclose(binario);
 
-    binario= fopen("tenistas.dat", "rb");
-    if(binario==NULL){
-        printf("Error en el archivo binario al leer\n");
-        return 1;
-    }
-    informarMejorRanking(binario, CANTTENISTAS);
+    // informarMejorRanking(binario, CANTTENISTAS);
+
+    printf("Ingrese nombre del tenista a actualizar: ");
+    scanf("%s", nombre);
+    printf("Ingrese apellido del tenista a actualizar: ");
+    scanf("%s", apellido);
+    printf("Ingrese nuevo ranking del tenista a actualizar: ");
+    scanf("%d", &nuevoRanking);
+    if(actualizarTenista(binario, nombre, apellido, nuevoRanking)==1)
+        printf("Tenista actualizado\n");
+    else
+        printf("Tenista NO actualizado\n");
+
     fclose(binario);
+    return 0;
 
 }
+
+int actualizarTenista(FILE *binario, char nombre[], char apellido[], int nuevoRanking){
+    Tenistas tenistaActual;
+    int seguir=1, comparacion=1, posTenista=0;
+
+    while (seguir==1 && fread(&tenistaActual, sizeof(Tenistas), 1, binario) != 0){
+        if(strcmp(tenistaActual.nombre, nombre)==0 && strcmp(tenistaActual.apellido, apellido)==0)//vale cero si son iguales
+            seguir=0;
+        else
+            posTenista++;
+    }
+    if(seguir==0){//si encontro el dato modifico. donde me encuentro parado retrocedo un int para ir a ranking
+        fseek(binario, posTenista*sizeof(Tenistas), SEEK_SET);
+        // fseek(binario, 0, SEEK_CUR-4);//porque no anda
+        tenistaActual.ranking=nuevoRanking;
+        fwrite(&tenistaActual, sizeof(Tenistas), 1, binario);//sobreescribo datos
+        int aux;
+        fread(&aux, sizeof(int), 1, binario);
+        printf("->%d", aux);
+        return 1;
+    }
+    return 0;
+}
+
 
 void informarMejorRanking(FILE *binario, int diml){
     int mejorRank=9999, posMR=0, i, maxTitulos=-1;
     Tenistas tenistaAct, mejorTenistaRank, mejorTenistaTitulos;
 
-    for(i=0; i<diml; i++){//podría haber hecho: while (fread(&tenistaActual, sizeof(Tenistas), 1, binario) != 0)
+    for(i=0; i<diml; i++){
         fread(&tenistaAct, sizeof(Tenistas), 1, binario);
         if(tenistaAct.ranking<mejorRank){
             mejorRank=tenistaAct.ranking;
-            // posMR=i; lo podría usar en lugar de guardar el mejor tenista en este if
             mejorTenistaRank=tenistaAct;
         }
         if(tenistaAct.cantTitulos>maxTitulos){
@@ -57,8 +90,6 @@ void informarMejorRanking(FILE *binario, int diml){
             mejorTenistaTitulos=tenistaAct;
         }
     }
-    // fseek(binario, (posMR)*sizeof(Tenistas), SEEK_SET); //en lugar de usar la pos conviene moverme de a estructuras, pero esto tmb funciona
-    // fread(&mejorTenista, sizeof(Tenistas), 1, binario);
     printf("jugador con mejor ranking: %s %s\n", mejorTenistaRank.nombre, mejorTenistaRank.apellido);
     printf("jugador con mas titulos es: %s %s\n", mejorTenistaTitulos.nombre, mejorTenistaTitulos.apellido);
 
@@ -84,10 +115,10 @@ void leerTenistas(Tenistas v[], int diml){
 
         printf("\nedad: ");
         scanf("%d", &v[i].edad);
-        
+
         printf("\ncantidad de titulos: ");
         scanf("%d", &v[i].cantTitulos);
-        
+
         printf("\nranking mundial: ");
         scanf("%d", &v[i].ranking);
 
