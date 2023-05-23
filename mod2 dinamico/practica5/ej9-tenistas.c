@@ -66,7 +66,6 @@ void informarMejorRanking(FILE *binario, int diml){
 }
 
 void cargarTenistas(Tenistas v[], int diml, FILE *binario){
-    char aux[2]=" ";
     for(int i=0; i<diml; i++){
         fwrite(&v[i], sizeof(Tenistas), 1, binario);//manejarme de a estructuras
     }
