@@ -14,6 +14,8 @@ typedef struct
 
 } Tenistas;
 
+void imprimirArchivo(FILE *);
+void actualizarVariosTenistas(FILE *);
 int actualizarTenista(FILE *, char[], char[], int);
 void informarMejorRanking(FILE *, int);
 void cargarTenistas(Tenistas[], int, FILE *);
@@ -49,10 +51,46 @@ int main()
         printf("Tenista NO actualizado\n");
 
     fseek(binario, 0, SEEK_SET);//no olvidar
-    informarMejorRanking(binario, CANTTENISTAS);
+    // informarMejorRanking(binario, CANTTENISTAS);
+
+    actualizarVariosTenistas(binario);
+    imprimirArchivo(binario);
 
     fclose(binario);
     return 0;
+}
+
+void imprimirArchivo(FILE *binario){
+    Tenistas t;
+
+    printf("nombre\tapellido\tedad\tcant titulos\tranking\nfortuna\n");
+    while (fread(&t, sizeof(Tenistas), 1, binario) != 0)
+        printf("%s\t%s\t%d\t%d\t%d\t%d\n", t.apellido, t.nombre, t.edad, t.cantTitulos, t.ranking, t.fortuna);
+
+    fseek(binario, 0, SEEK_SET);
+}
+
+void actualizarVariosTenistas(FILE *binario){
+    char nombre[50], apellido[50];
+    int nuevoRanking;
+
+    printf("Ingrese nombre del tenista a actualizar (ZZZ=fin): ");
+    scanf("%s", nombre);
+    while(strcmp("ZZZ", nombre)!=0){
+        printf("Ingrese apellido del tenista a actualizar: ");
+        scanf("%s", apellido);
+        printf("Ingrese nuevo ranking del tenista a actualizar: ");
+        scanf("%d", &nuevoRanking);
+
+        if (actualizarTenista(binario, nombre, apellido, nuevoRanking) == 1)
+            printf("Tenista actualizado\n");
+        else
+            printf("Tenista NO actualizado\n");
+        fseek(binario, 0, SEEK_SET);//no olvidar
+
+        printf("Ingrese otro nombre de tenista a actualizar (ZZZ=fin): ");
+        scanf("%s", nombre);
+    }
 }
 
 int actualizarTenista(FILE *binario, char nombre[], char apellido[], int nuevoRanking)

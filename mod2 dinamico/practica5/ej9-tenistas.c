@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define CANTTENISTAS 2
+#define CANTTENISTAS 20
 typedef struct{
     char nombre[50];
     char apellido[50];
