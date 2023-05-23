@@ -19,7 +19,7 @@ void leerTenistas(Tenistas [], int);
 int main(){
     FILE *binario;
     Tenistas vectorTenistas[CANTTENISTAS];
-    
+
     leerTenistas(vectorTenistas, CANTTENISTAS);
 
     binario= fopen("tenistas.dat", "wb");
@@ -48,11 +48,11 @@ void informarMejorRanking(FILE *binario, int diml){
         fread(&tenistaAct, sizeof(Tenistas), 1, binario);
         if(tenistaAct.ranking<mejorRank){
             mejorRank=tenistaAct.ranking;
-            // posMR=i;
+            // posMR=i; lo podría usar en lugar de guardar el mejor tenista en este if
             mejorTenista=tenistaAct;
         }
     }
-    // fseek(binario, (posMR)*sizeof(Tenistas), SEEK_SET); //en lugar de usar la pos conviene moverme de a estructuras
+    // fseek(binario, (posMR)*sizeof(Tenistas), SEEK_SET); //en lugar de usar la pos conviene moverme de a estructuras, pero esto tmb funciona
     // fread(&mejorTenista, sizeof(Tenistas), 1, binario);
     printf("jugador con mejor ranking: %s %s\n", mejorTenista.nombre, mejorTenista.apellido);
 
