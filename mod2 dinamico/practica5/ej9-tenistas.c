@@ -41,20 +41,26 @@ int main(){
 }
 
 void informarMejorRanking(FILE *binario, int diml){
-    int mejorRank=9999, posMR=0, i;
-    Tenistas tenistaAct, mejorTenista;
+    int mejorRank=9999, posMR=0, i, maxTitulos=-1;
+    Tenistas tenistaAct, mejorTenistaRank, mejorTenistaTitulos;
 
     for(i=0; i<diml; i++){//podría haber hecho: while (fread(&tenistaActual, sizeof(Tenistas), 1, binario) != 0)
         fread(&tenistaAct, sizeof(Tenistas), 1, binario);
         if(tenistaAct.ranking<mejorRank){
             mejorRank=tenistaAct.ranking;
             // posMR=i; lo podría usar en lugar de guardar el mejor tenista en este if
-            mejorTenista=tenistaAct;
+            mejorTenistaRank=tenistaAct;
+        }
+        if(tenistaAct.cantTitulos>maxTitulos){
+            maxTitulos=tenistaAct.cantTitulos;
+            mejorTenistaTitulos=tenistaAct;
         }
     }
     // fseek(binario, (posMR)*sizeof(Tenistas), SEEK_SET); //en lugar de usar la pos conviene moverme de a estructuras, pero esto tmb funciona
     // fread(&mejorTenista, sizeof(Tenistas), 1, binario);
-    printf("jugador con mejor ranking: %s %s\n", mejorTenista.nombre, mejorTenista.apellido);
+    printf("jugador con mejor ranking: %s %s\n", mejorTenistaRank.nombre, mejorTenistaRank.apellido);
+    printf("jugador con mas titulos es: %s %s\n", mejorTenistaTitulos.nombre, mejorTenistaTitulos.apellido);
+
 
 }
 
