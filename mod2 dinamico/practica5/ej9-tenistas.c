@@ -17,45 +17,52 @@ void cargarTenistas(Tenistas [], int, FILE *);
 void leerTenistas(Tenistas [], int);
 
 int main(){
+    FILE *binario;
     Tenistas vectorTenistas[CANTTENISTAS];
+    
     leerTenistas(vectorTenistas, CANTTENISTAS);
 
-    FILE *binario= fopen("tenistas.dat", "wb");
+    binario= fopen("tenistas.dat", "wb");
     if(binario==NULL){
-        printf("Error en el archivo binario\n");
+        printf("Error en el archivo binario al escribir\n");
         return 1;
     }
-
     cargarTenistas(vectorTenistas, CANTTENISTAS, binario);
+    fclose(binario);
 
+    binario= fopen("tenistas.dat", "rb");
+    if(binario==NULL){
+        printf("Error en el archivo binario al leer\n");
+        return 1;
+    }
     informarMejorRanking(binario, CANTTENISTAS);
+    fclose(binario);
 
 }
 
 void informarMejorRanking(FILE *binario, int diml){
-    int aux, rankAct, mejorRank=9999, posMR=0, i;
-    char nombreMR[50], apellidoMR[50];
-    for(i=0; i<diml; i++){
-        fread(&aux, sizeof(int), 4, binario);
-        fread(&rankAct, sizeof(int), 1, binario);
-        if(rankAct<mejorRank){
-            mejorRank=rankAct;
-            posMR=i;
+    int mejorRank=9999, posMR=0, i;
+    Tenistas tenistaAct, mejorTenista;
+
+    for(i=0; i<diml; i++){//podría haber hecho: while (fread(&tenistaActual, sizeof(Tenistas), 1, binario) != 0)
+        fread(&tenistaAct, sizeof(Tenistas), 1, binario);
+        if(tenistaAct.ranking<mejorRank){
+            mejorRank=tenistaAct.ranking;
+            // posMR=i;
+            mejorTenista=tenistaAct;
         }
     }
-    fseek(binario, (i-4)*sizeof(int), SEEK_SET);
-    fread(nombreMR, sizeof(int), 1, binario);
-    fread(apellidoMR, sizeof(int), 1, binario);
-
-    printf("jugador con mejor ranking: %s %s\n", nombreMR, apellidoMR);
+    // fseek(binario, (posMR)*sizeof(Tenistas), SEEK_SET); //en lugar de usar la pos conviene moverme de a estructuras
+    // fread(&mejorTenista, sizeof(Tenistas), 1, binario);
+    printf("jugador con mejor ranking: %s %s\n", mejorTenista.nombre, mejorTenista.apellido);
 
 }
 
 void cargarTenistas(Tenistas v[], int diml, FILE *binario){
     char aux[2]=" ";
     for(int i=0; i<diml; i++){
-        fwrite(v[i].nombre, sizeof(int), 1, binario);
-        fwrite(v[i].apellido, sizeof(int), 1, binario);
+        fwrite(v[i].nombre, sizeof(char), 50, binario);
+        fwrite(v[i].apellido, sizeof(char), 50, binario);
         fwrite(&v[i].edad, sizeof(int), 1, binario);
         fwrite(&v[i].cantTitulos, sizeof(int), 1, binario);
         fwrite(&v[i].ranking, sizeof(int), 1, binario);
