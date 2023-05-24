@@ -28,7 +28,7 @@ typedef nodo* lista;
 
 int buscarPersonaBinario(FILE *, FILE *, long int, Persona *);
 int contarLineas(FILE *);
-int busquedaDicotomicaPosBinario(FILE *, long int);
+int busquedaDicotomicaPosBinario(FILE *, long int, int *);
 void imprimirPersona(Persona pBuscada);
 void cargarVector(campo[], lista, int);
 int busquedaDicotomicaPos(campo[], int, long int);
@@ -46,7 +46,7 @@ int main(){
     campo p;
     FILE *personas, *binario;
     char aux2[100];//tiene que ser grande para poder leer cada renglon completo sin repetir
-    int aux, diml=0;
+    int aux, diml=0, accesosDisco;
     long int dni;
 
     binario=fopen("personas.idx", "wb+");//porque desp lo quiero leer
@@ -82,13 +82,20 @@ int main(){
 
     printf("Ingrese dni de la persona a buscar: ");
     scanf("%ld", &dni);
-    if(buscarPersonaLista(personas, l, dni, &pBuscada, diml)==-1)
-        printf("Persona no encontrada\n");
-    else
-        imprimirPersona(pBuscada);
+    // if(buscarPersonaLista(personas, l, dni, &pBuscada, diml)==-1)
+    //     printf("Persona no encontrada\n");
+    // else
+    //     imprimirPersona(pBuscada);
 
-    // printf("cant de acceso al disco: %d\n", buscarPersonaBinario(personas, l, dni, &pBuscada, diml) );
-    // imprimirPersona(pBuscada);
+
+    accesosDisco=buscarPersonaBinario(personas, binario, dni, &pBuscada);
+    // if(accesosDisco==0)
+    //     printf("Persona no encontrada\n");
+    // else{
+    //     printf("cant de acceso al disco: %d\n", accesosDisco);
+    //     imprimirPersona(pBuscada);
+    // }
+
 
     liberarLista(&l);
     fclose(binario);
@@ -99,12 +106,11 @@ int main(){
 int buscarPersonaBinario(FILE *personas, FILE *binario, long int dni, Persona *p){
 //busco dicotomicamente el dni y me fijo la pos el el csv
 
-    int pos;
-    pos=busquedaDicotomicaPosBinario(binario, dni);
+    int pos, accesosDisco;
+    accesosDisco=busquedaDicotomicaPosBinario(binario, dni, &pos);
+
     // printf("%d", pos);
-    if(pos==-1)
-        return -1;
-    else{
+    if(accesosDisco!=0){
         fseek(personas, pos, SEEK_SET);
         fscanf(personas,"%d;", &(*p).id);
         fscanf(personas,"%ld;", &p->dni);//ambas maneras equivalentes
@@ -118,27 +124,30 @@ int buscarPersonaBinario(FILE *personas, FILE *binario, long int dni, Persona *p
         fseek(personas, 0, SEEK_SET);//restauro pos inicial
     }
 
-    return 0;
+    return accesosDisco;
 }
 
 int contarLineas(FILE *binario){
-    long int dni;
-    int pos, cont=0;
-    while(fread(&dni, sizeof(long int), 1, binario)!=EOF){
-        fread(&pos, sizeof(int), 1, binario);
+    // fseek(binario, 0, SEEK_SET);//no necesario porque ya lo hice antes
+
+    campo c;
+    int cont=0;
+    while(fread(&c, sizeof(campo), 1, binario)!=EOF){
         cont++;
     }
     return cont;
 }
 
-int busquedaDicotomicaPosBinario(FILE * binario, long int dni){
+int busquedaDicotomicaPosBinario(FILE * binario, long int dni, int *pos){
 
-    int centro, inf=0, sup, t, dniAct, posAct;
-
+    int centro, inf=0, sup, t, dniAct, posAct, accesosDisco;
     sup=contarLineas(binario);//cant de renglones
-    t=sizeof(long int) + sizeof(int);//tamanio de un renglon
+    printf("Hola");
+
+    t=sizeof(campo);//tamanio de un renglon
 
     while(inf<=sup){
+        accesosDisco++;
         centro=((sup-inf)/2)+inf;
         // printf("%ld\n", v[centro].dni);
         fseek(binario, centro*t, SEEK_SET);
@@ -146,8 +155,10 @@ int busquedaDicotomicaPosBinario(FILE * binario, long int dni){
         fread(&posAct, sizeof(long int), 1, binario);
         fseek(binario, 0, SEEK_SET); //me reubico
 
-        if(dniAct==dni)
-        return posAct;
+        if(dniAct==dni){
+            (*pos)=posAct;
+            return accesosDisco;
+        }
         else {
             if(dni > dniAct) //esta en orden descendente
               sup=centro-1;
@@ -155,7 +166,8 @@ int busquedaDicotomicaPosBinario(FILE * binario, long int dni){
             inf=centro+1;
         }
     }
-    return -1;
+    //si no encontro no debo aclarar los accesos a memoria
+    return 0;
 }
 
 void imprimirPersona(Persona p){
