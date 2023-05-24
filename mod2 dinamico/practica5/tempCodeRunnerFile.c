@@ -1,1 +1,1 @@
-imprimirLista
+imprimirPersona

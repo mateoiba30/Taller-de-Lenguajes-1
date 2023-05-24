@@ -26,6 +26,7 @@ struct nodo{//DEBO PONERLE NOMBRE AL INICIO
 typedef struct nodo nodo;
 typedef nodo* lista;
 
+void imprimirPersona(Persona pBuscada);
 void cargarVector(campo[], lista, int);
 int busquedaDicotomicaPos(campo[], int, long int);
 int buscarPersonaLista(FILE *, lista, long int, Persona *, int );
@@ -89,6 +90,17 @@ int main(){
     return 0;
 }
 
+void imprimirPersona(Persona p){
+    printf("id: %d", p.id);
+    printf("dni: %ld", p.dni);
+    printf("apellido: %s", p.apellido);
+    printf("nombre: %s", p.nombre);
+    printf("trabajo: %s", p.trabajo);
+    printf("correo: %s", p.correo);
+    printf("ciudad: %s", p.ciudad);
+    printf("pais: %s", p.pais);
+}
+
 int buscarPersonaLista(FILE *personas, lista l, long int dni, Persona *p, int diml){//podría poner la diml dentro de la estructura tipo lista
 //busco dicotomicamente el dni y me fijo la pos el el csv
     campo v[diml];
@@ -100,7 +112,10 @@ int buscarPersonaLista(FILE *personas, lista l, long int dni, Persona *p, int di
         return -1;
     else{
         fseek(personas, pos, SEEK_SET);
-        fread(p, sizeof(Persona), 1, personas);
+        fscanf(personas,"%d;", &(*p).id);
+        fscanf(personas,"%ld;", p->dni);//ambas maneras equivalentes
+
+
         fseek(personas, 0, SEEK_SET);//restauro pos inicial
     }
 
