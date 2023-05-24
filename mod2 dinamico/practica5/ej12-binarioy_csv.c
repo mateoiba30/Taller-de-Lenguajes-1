@@ -26,6 +26,9 @@ struct nodo{//DEBO PONERLE NOMBRE AL INICIO
 typedef struct nodo nodo;
 typedef nodo* lista;
 
+int buscarPersonaBinario(FILE *, FILE *, long int, Persona *);
+int contarLineas(FILE *);
+int busquedaDicotomicaPosBinario(FILE *, long int);
 void imprimirPersona(Persona pBuscada);
 void cargarVector(campo[], lista, int);
 int busquedaDicotomicaPos(campo[], int, long int);
@@ -51,7 +54,7 @@ int main(){
         printf("Error en el archivo binario\n");
         return 1;
     }
-    personas=fopen("personas.csv", "r");
+    personas=fopen("personas.csv", "r");//esto no lo modularizo porque quiero que corte el main en caso de error
     if(personas==NULL){
         printf("Error en el archivo csv\n");
         return 1;
@@ -84,10 +87,75 @@ int main(){
     else
         imprimirPersona(pBuscada);
 
+    // printf("cant de acceso al disco: %d\n", buscarPersonaBinario(personas, l, dni, &pBuscada, diml) );
+    // imprimirPersona(pBuscada);
+
     liberarLista(&l);
     fclose(binario);
     fclose(personas);
     return 0;
+}
+
+int buscarPersonaBinario(FILE *personas, FILE *binario, long int dni, Persona *p){
+//busco dicotomicamente el dni y me fijo la pos el el csv
+
+    int pos;
+    pos=busquedaDicotomicaPosBinario(binario, dni);
+    // printf("%d", pos);
+    if(pos==-1)
+        return -1;
+    else{
+        fseek(personas, pos, SEEK_SET);
+        fscanf(personas,"%d;", &(*p).id);
+        fscanf(personas,"%ld;", &p->dni);//ambas maneras equivalentes
+        fscanf(personas,"%[^;];", p->apellido);
+        fscanf(personas,"%[^;];", p->nombre);
+        fscanf(personas,"%[^;];", p->trabajo);
+        fscanf(personas,"%[^;];", p->correo);
+        fscanf(personas,"%[^;];", p->ciudad);
+        fscanf(personas,"%s", p->pais);//el ultimo quiero que lea hasta el salto de linea, no hasta ; porque sino me incluye el siguiente id
+
+        fseek(personas, 0, SEEK_SET);//restauro pos inicial
+    }
+
+    return 0;
+}
+
+int contarLineas(FILE *binario){
+    long int dni;
+    int pos, cont=0;
+    while(fread(&dni, sizeof(long int), 1, binario)!=EOF){
+        fread(&pos, sizeof(int), 1, binario);
+        cont++;
+    }
+    return cont;
+}
+
+int busquedaDicotomicaPosBinario(FILE * binario, long int dni){
+
+    int centro, inf=0, sup, t, dniAct, posAct;
+
+    sup=contarLineas(binario);//cant de renglones
+    t=sizeof(long int) + sizeof(int);//tamanio de un renglon
+
+    while(inf<=sup){
+        centro=((sup-inf)/2)+inf;
+        // printf("%ld\n", v[centro].dni);
+        fseek(binario, centro*t, SEEK_SET);
+        fread(&dniAct, sizeof(long int), 1, binario);
+        fread(&posAct, sizeof(long int), 1, binario);
+        fseek(binario, 0, SEEK_SET); //me reubico
+
+        if(dniAct==dni)
+        return posAct;
+        else {
+            if(dni > dniAct) //esta en orden descendente
+              sup=centro-1;
+        else
+            inf=centro+1;
+        }
+    }
+    return -1;
 }
 
 void imprimirPersona(Persona p){
