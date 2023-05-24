@@ -26,19 +26,24 @@ struct nodo{//DEBO PONERLE NOMBRE AL INICIO
 typedef struct nodo nodo;
 typedef nodo* lista;
 
+void cargarVector(campo[], lista, int);
+int busquedaDicotomicaPos(campo[], int, long int);
+int buscarPersonaLista(FILE *, lista, long int, Persona *, int );
 void imprimirArchivo(FILE *binario);
 void cargarBinario(FILE *, lista);
 void inicializarLista(lista*);
-void insertarOrdenadoAscendente(lista*, campo);
+void insertarOrdenadoDescendente(lista*, campo);
 void imprimirLista(lista);
 void liberarLista(lista*);
 
 int main(){
+    Persona pBuscada;
     lista l;
     campo p;
     FILE *personas, *binario;
     char aux2[100];//tiene que ser grande para poder leer cada renglon completo sin repetir
-    int aux;
+    int aux, diml=0;
+    long int dni;
 
     binario=fopen("personas.idx", "wb+");//porque desp lo quiero leer
     if(binario==NULL){
@@ -50,7 +55,6 @@ int main(){
         printf("Error en el archivo csv\n");
         return 1;
     }
-    printf("%p\n", personas);
     inicializarLista(&l);
 
     //no leo un archivo binario, por ende no es necesario conocer como se cargaron los datos para saber el peso de cada persona y moverme de a personas
@@ -62,14 +66,22 @@ int main(){
         // printf("id: %d dni:%ld \n", aux, p.dni);
         fgets(aux2, 100, personas);//leo el resto
         
-        insertarOrdenadoAscendente(&l, p);
+        insertarOrdenadoDescendente(&l, p);
+        diml++;
         p.pos=ftell(personas);
     }
 
     // printf("eof: %d\n", aux); //da 5000 porque la ultima iteracion no le carga nada a aux
-    // imprimirLista(l);
+    imprimirLista(l);
     cargarBinario(binario, l);
     // imprimirArchivo(binario);
+
+    printf("Ingrese dni de la persona a buscar: ");
+    scanf("%ld", &dni);
+    if(buscarPersonaLista(personas, l, dni, &pBuscada, diml)==-1)
+        printf("Persona no encontrada\n");
+    else
+        imprimirPersona(pBuscada);
 
     liberarLista(&l);
     fclose(binario);
@@ -77,11 +89,48 @@ int main(){
     return 0;
 }
 
-void buscarPersona(FILE *personas, lista l, long int dni, Persona p){
-    long int dni;
+int buscarPersonaLista(FILE *personas, lista l, long int dni, Persona *p, int diml){//podría poner la diml dentro de la estructura tipo lista
+//busco dicotomicamente el dni y me fijo la pos el el csv
+    campo v[diml];
+    int pos;
+    cargarVector(v, l, diml);
+    pos=busquedaDicotomicaPos(v, diml, dni);
+    // printf("%d", pos);
+    if(pos==-1)
+        return -1;
+    else{
+        fseek(personas, pos, SEEK_SET);
+        fread(p, sizeof(Persona), 1, personas);
+        fseek(personas, 0, SEEK_SET);//restauro pos inicial
+    }
 
-    printf("Ingrese dni de la persona a buscar: ");
-    scanf("%ld", &dni);
+    return 0;
+}
+
+int busquedaDicotomicaPos(campo v[], int diml, long int dni){//que sea dicotomica no significa que sea recursiva
+   int centro, inf=0, sup=diml-1;
+
+   while(inf<=sup){
+        centro=((sup-inf)/2)+inf;
+        printf("%ld\n", v[centro].dni);
+        if(v[centro].dni==dni)
+            return v[centro].pos;
+        else {
+            if(dni > v[centro].dni) //esta en orden descendente
+                sup=centro-1;
+            else
+                inf=centro+1;
+        }
+   }
+   return -1;
+}
+
+void cargarVector(campo v[], lista l, int diml){
+    lista aux=l;
+    for(int i=0; i<diml; i++){
+        v[i]=aux->dato;
+        aux=aux->sig;
+    }
 }
 
 void imprimirArchivo(FILE *binario){
@@ -115,7 +164,7 @@ void cargarBinario(FILE *binario, lista l){
     fseek(binario, 0, SEEK_SET);//no olvidar
 }
 
-void insertarOrdenadoAscendente( lista* l, campo dato){
+void insertarOrdenadoDescendente( lista* l, campo dato){
     lista nue, ant, act;
     nue=(lista)malloc(sizeof(nodo));//reservo mem
     nue->dato=dato;
