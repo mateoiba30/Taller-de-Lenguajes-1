@@ -22,7 +22,7 @@ int main(){
         return 1;
     }
 
-    while (fread(&aux, sizeof(char), 1, binario) != 0)
+    while (fread(&aux, sizeof(char), 1, binario) != 0)//no uso feof porque no me quiero pasar al contar los bytes
         cont++;
 
     // printf("el tamanio es de: %d bytes\n", sizeof(Tenistas));//=116 bytes
@@ -31,3 +31,16 @@ int main(){
     fclose(binario);
     return 0;
 }
+
+//otra forma:
+// int tamanio(FILE *f) {
+//     int t;//si se q va a ser grande el archivo puedo poner otro tipo en lugar de int
+
+//     fseek(f, 0, SEEK_END);
+//     t = ftell(f);
+//     rewind(f);
+
+//     return t;
+// }
+
+//tmb puedo restar el valor del puntero al final con el puntero al inicio
