@@ -132,7 +132,7 @@ int contarLineas(FILE *binario){
 
     campo c;
     int cont=0;
-    while(fread(&c, sizeof(campo), 1, binario)!=EOF){
+    while(fread())!=EOF){//ver como se escribe el fread
         cont++;
     }
     return cont;
