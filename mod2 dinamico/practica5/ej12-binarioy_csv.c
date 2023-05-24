@@ -73,7 +73,7 @@ int main(){
     }
 
     // printf("eof: %d\n", aux); //da 5000 porque la ultima iteracion no le carga nada a aux
-    imprimirLista(l);
+    // imprimirLista(l);
     cargarBinario(binario, l);
     // imprimirArchivo(binario);
 
@@ -91,14 +91,14 @@ int main(){
 }
 
 void imprimirPersona(Persona p){
-    printf("id: %d", p.id);
-    printf("dni: %ld", p.dni);
-    printf("apellido: %s", p.apellido);
-    printf("nombre: %s", p.nombre);
-    printf("trabajo: %s", p.trabajo);
-    printf("correo: %s", p.correo);
-    printf("ciudad: %s", p.ciudad);
-    printf("pais: %s", p.pais);
+    printf("id: %d\t", p.id);
+    printf("dni: %ld\t", p.dni);
+    printf("apellido: %s\t", p.apellido);
+    printf("nombre: %s\t", p.nombre);
+    printf("trabajo: %s\t", p.trabajo);
+    printf("correo: %s\t", p.correo);
+    printf("ciudad: %s\t", p.ciudad);
+    printf("pais: %s\t", p.pais);
 }
 
 int buscarPersonaLista(FILE *personas, lista l, long int dni, Persona *p, int diml){//podría poner la diml dentro de la estructura tipo lista
@@ -113,8 +113,13 @@ int buscarPersonaLista(FILE *personas, lista l, long int dni, Persona *p, int di
     else{
         fseek(personas, pos, SEEK_SET);
         fscanf(personas,"%d;", &(*p).id);
-        fscanf(personas,"%ld;", p->dni);//ambas maneras equivalentes
-
+        fscanf(personas,"%ld;", &p->dni);//ambas maneras equivalentes
+        fscanf(personas,"%[^;];", p->apellido);
+        fscanf(personas,"%[^;];", p->nombre);
+        fscanf(personas,"%[^;];", p->trabajo);
+        fscanf(personas,"%[^;];", p->correo);
+        fscanf(personas,"%[^;];", p->ciudad);
+        fscanf(personas,"%s", p->pais);//el ultimo quiero que lea hasta el salto de linea, no hasta ; porque sino me incluye el siguiente id
 
         fseek(personas, 0, SEEK_SET);//restauro pos inicial
     }
@@ -127,7 +132,7 @@ int busquedaDicotomicaPos(campo v[], int diml, long int dni){//que sea dicotomic
 
    while(inf<=sup){
         centro=((sup-inf)/2)+inf;
-        printf("%ld\n", v[centro].dni);
+        // printf("%ld\n", v[centro].dni);
         if(v[centro].dni==dni)
             return v[centro].pos;
         else {
