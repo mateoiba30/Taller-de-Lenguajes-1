@@ -43,4 +43,4 @@ int main(){
 //     return t;
 // }
 
-//tmb puedo restar el valor del puntero al final con el puntero al inicio
+//tmb puedo restar el valor del puntero al final con el puntero al inicio (el inicio no vale cero)

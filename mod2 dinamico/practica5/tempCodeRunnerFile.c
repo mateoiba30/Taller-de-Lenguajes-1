@@ -1,36 +1,6 @@
-#include <stdio.h>
-// #include <stdlib.h>
-
-// int main(){
-//     int n;
-//     char aux;
-//     FILE *texto, *binario;
-//     char buffer[1];
-//     aux='0';
-
-//     texto = fopen("numeros.txt", "w");
-//     if (texto == NULL){
-//         printf ("Error en texto\n");
-//         return 1;
-//     }
-
-//     binario = fopen("binario.dat", "wb");
-//     if (binario == NULL){
-//         printf ("Error en binario\n");
-//         return 1;
-//     }
-
-//     for(int i=0; i<10; i++){
-//         printf("Ingrese el numero %d: ", i+1);
-//         scanf("%d", &n);
-//         n=n+aux;//para guardar el valor en caracter del numero
-
-//         fputc(n, texto);
-//         buffer[0]=n;
-//         fwrite(buffer, sizeof(char), 1, binario);//en luigar del buffer tmb puedo mandar la dir de n: &n 
-//     }   
-
-//     fclose(texto);
-//     fclose(binario);
-//     return 0;
-// }
+    campo p[5035];
+    fread(p, sizeof(campo), 5000, binario);
+    int i;
+    for (i=0; i<5000; i++){
+        printf("%ld\t%d\n", p[i].dni, p[i].pos);
+    }

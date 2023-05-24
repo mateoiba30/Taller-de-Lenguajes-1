@@ -31,10 +31,7 @@ int main()
     leerTenistas(vectorTenistas, CANTTENISTAS);
     binario = fopen("tenistas.dat", "wb+"); // el segundo campo estaba con rb+, por ende si solo usamos ese ej iria con wb+
     if (binario == NULL)
-    {
-        printf("Error en el archivo binario\n");
-        return 1;
-    }
+
     cargarTenistas(vectorTenistas, CANTTENISTAS, binario);
 
     // informarMejorRanking(binario, CANTTENISTAS);

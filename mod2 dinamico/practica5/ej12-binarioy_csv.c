@@ -1,0 +1,160 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct{
+    int id;
+    long int dni;
+    char apellido[50];
+    char nombre[50];
+    char trabajo[50];
+    char correo[50];
+    char ciudad[50];
+    char pais[50];
+
+}Persona;
+
+typedef struct{
+    long int dni;
+    int pos;
+}campo;
+
+struct nodo{//DEBO PONERLE NOMBRE AL INICIO
+    campo dato;
+    struct nodo* sig;
+};
+
+typedef struct nodo nodo;
+typedef nodo* lista;
+
+void imprimirArchivo(FILE *binario);
+void cargarBinario(FILE *, lista);
+void inicializarLista(lista*);
+void insertarOrdenadoAscendente(lista*, campo);
+void imprimirLista(lista);
+void liberarLista(lista*);
+
+int main(){
+    lista l;
+    campo p;
+    FILE *personas, *binario;
+    char aux2[100];//tiene que ser grande para poder leer cada renglon completo sin repetir
+    int aux;
+
+    binario=fopen("personas.idx", "wb+");//porque desp lo quiero leer
+    if(binario==NULL){
+        printf("Error en el archivo binario\n");
+        return 1;
+    }
+    personas=fopen("personas.csv", "r");
+    if(personas==NULL){
+        printf("Error en el archivo csv\n");
+        return 1;
+    }
+    printf("%p\n", personas);
+    inicializarLista(&l);
+
+    //no leo un archivo binario, por ende no es necesario conocer como se cargaron los datos para saber el peso de cada persona y moverme de a personas
+    fgets(aux2, 100, personas);//leo titulos, mandarle la cant de su tamanio
+
+    p.pos=ftell(personas);
+    while(fscanf(personas,"%d;", &aux)!=EOF){//id
+        fscanf(personas,"%ld;", &p.dni);
+        // printf("id: %d dni:%ld \n", aux, p.dni);
+        fgets(aux2, 100, personas);//leo el resto
+        
+        insertarOrdenadoAscendente(&l, p);
+        p.pos=ftell(personas);
+    }
+
+    // printf("eof: %d\n", aux); //da 5000 porque la ultima iteracion no le carga nada a aux
+    // imprimirLista(l);
+    cargarBinario(binario, l);
+    // imprimirArchivo(binario);
+
+    liberarLista(&l);
+    fclose(binario);
+    fclose(personas);
+    return 0;
+}
+
+void buscarPersona(FILE *personas, lista l, long int dni, Persona p){
+    long int dni;
+
+    printf("Ingrese dni de la persona a buscar: ");
+    scanf("%ld", &dni);
+}
+
+void imprimirArchivo(FILE *binario){
+    int cont=0;
+    campo p;
+    while (fread(&p, sizeof(campo), 1, binario) ==1){//igual que preguntar por !=0
+        printf("%ld\t%d\n", p.dni, p.pos);
+        // cont++;
+    }
+
+    // printf("%d\n", cont);//por algun motivo hay 5034 datos, pero solo 5000 ids
+
+    // campo p[5000]; //debería andar el imprimir todo de una, pero parece que no
+    // fread(p, sizeof(campo), 5000, binario);
+    // int i;
+    // for (i=0; i<5000; i++){
+    //     printf("%ld\t%d\n", p[i].dni, p[i].pos);
+    // }
+
+    fseek(binario, 0, SEEK_SET);//no olvidar
+}
+
+void cargarBinario(FILE *binario, lista l){
+    lista aux=l;
+    while(aux!=NULL){
+        // fwrite(&aux->dato.dni, sizeof(long int), 1, binario);
+        // fwrite(&aux->dato.pos, sizeof(int), 1, binario);
+        fwrite(&aux->dato, sizeof(campo), 1, binario);//mejor de a estructuras
+        aux=aux->sig;
+    }
+    fseek(binario, 0, SEEK_SET);//no olvidar
+}
+
+void insertarOrdenadoAscendente( lista* l, campo dato){
+    lista nue, ant, act;
+    nue=(lista)malloc(sizeof(nodo));//reservo mem
+    nue->dato=dato;
+
+    act=(*l);
+    ant=(*l);
+
+    while(act!=NULL && act->dato.dni > dato.dni){
+        ant=act;
+        act=act->sig;
+    }
+
+    nue->sig=act;
+
+    if((*l)==act)
+        (*l)=nue;
+    else
+        ant->sig =nue;
+
+}
+
+void inicializarLista(lista* l){
+    (*l)=NULL;
+}
+
+void imprimirLista(lista l){
+    lista aux=l;
+        while(aux!=NULL){
+            printf("%d, %d\n",aux->dato.dni, aux->dato.pos);
+            aux=aux->sig;
+    }
+
+}
+
+void liberarLista(lista* l){
+    lista aux;
+    while( (*l)){
+        aux=(*l);
+        (*l)=(*l)->sig;
+        free(aux);
+    }
+}
