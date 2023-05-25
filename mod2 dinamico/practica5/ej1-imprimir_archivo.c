@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #define LONG 300
 int main(){
     FILE *f;

@@ -22,9 +22,15 @@ int main(){
         return 1;
     }
 
-    while (fread(&aux, sizeof(char), 1, binario) != 0)//no uso feof porque no me quiero pasar al contar los bytes
+    while (fread(&aux, sizeof(char), 1, binario) ==1)//no uso feof porque no me quiero pasar al contar los bytes
         cont++;
 
+    // fread(&aux, sizeof(char), 1, binario); //no funciona
+    // while (feof(binario)!=0){
+    //     cont++;
+    //     fread(&aux, sizeof(char), 1, binario);
+
+    // }
     // printf("el tamanio es de: %d bytes\n", sizeof(Tenistas));//=116 bytes
     printf("el tamanio es de: %d bytes\n", cont);//como tengo 2 tenistas su peso es de 232 bytes
 

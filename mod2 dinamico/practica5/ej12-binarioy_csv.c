@@ -124,7 +124,9 @@ int buscarPersonaBinario(FILE *personas, FILE *binario, long int dni, Persona *p
         fscanf(personas,"%[^;];", p->trabajo);
         fscanf(personas,"%[^;];", p->correo);
         fscanf(personas,"%[^;];", p->ciudad);
-        fscanf(personas,"%s", p->pais);//el ultimo quiero que lea hasta el salto de linea, no hasta ; porque sino me incluye el siguiente id
+        // fscanf(personas,"%s", p->pais);//no funciona porque lee hasta el espacio
+        fgets(p->pais, 50, personas);//el ultimo quiero que lea hasta el salto de linea, no hasta ; porque sino me incluye el siguiente id, o un espacio
+        //lo malo es que me copia el \n
 
         fseek(personas, 0, SEEK_SET);//restauro pos inicial
     }
@@ -203,8 +205,9 @@ int buscarPersonaLista(FILE *personas, lista l, long int dni, Persona *p, int di
         fscanf(personas,"%[^;];", p->trabajo);
         fscanf(personas,"%[^;];", p->correo);
         fscanf(personas,"%[^;];", p->ciudad);
-        fscanf(personas,"%s", p->pais);//el ultimo quiero que lea hasta el salto de linea, no hasta ; porque sino me incluye el siguiente id
-
+        // fscanf(personas,"%s", p->pais);//no funciona porque lee hasta el espacio
+        fgets(p->pais, 50, personas);//el ultimo quiero que lea hasta el salto de linea, no hasta ; porque sino me incluye el siguiente id, o un espacio
+        //lo malo es que me copia el \n
         fseek(personas, 0, SEEK_SET);//restauro pos inicial
     }
 

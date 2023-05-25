@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 struct nodo{//DEBO PONERLE NOMBRE AL INICIO
     char dato[255];
