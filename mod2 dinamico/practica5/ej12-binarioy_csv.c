@@ -89,12 +89,12 @@ int main(){
 
 
     accesosDisco=buscarPersonaBinario(personas, binario, dni, &pBuscada);
-    // if(accesosDisco==0)
-    //     printf("Persona no encontrada\n");
-    // else{
-    //     printf("cant de acceso al disco: %d\n", accesosDisco);
-    //     imprimirPersona(pBuscada);
-    // }
+    if(accesosDisco==0)
+        printf("Persona no encontrada\n");
+    else{
+        printf("cant de acceso al disco: %d\n", accesosDisco);
+        imprimirPersona(pBuscada);
+    }
 
 
     liberarLista(&l);
@@ -109,7 +109,8 @@ int buscarPersonaBinario(FILE *personas, FILE *binario, long int dni, Persona *p
     int pos, accesosDisco;
     accesosDisco=busquedaDicotomicaPosBinario(binario, dni, &pos);
 
-    // printf("%d", pos);
+    // printf("%d", pos);//encuentra bien la pos
+
     if(accesosDisco!=0){
         fseek(personas, pos, SEEK_SET);
         fscanf(personas,"%d;", &(*p).id);
@@ -129,10 +130,9 @@ int buscarPersonaBinario(FILE *personas, FILE *binario, long int dni, Persona *p
 
 int contarLineas(FILE *binario){
     // fseek(binario, 0, SEEK_SET);//no necesario porque ya lo hice antes
-
-    campo c;
-    int cont=0;
-    while(fread())!=EOF){//ver como se escribe el fread
+    int t, cont=0, aux;
+    t=sizeof(long int) + sizeof(int);
+    while(fread(&aux, sizeof(t), 1, binario)!=0){//ver como se escribe el fread
         cont++;
     }
     return cont;
@@ -142,16 +142,15 @@ int busquedaDicotomicaPosBinario(FILE * binario, long int dni, int *pos){
 
     int centro, inf=0, sup, t, dniAct, posAct, accesosDisco;
     sup=contarLineas(binario);//cant de renglones
-    printf("Hola");
 
     t=sizeof(campo);//tamanio de un renglon
 
     while(inf<=sup){
         accesosDisco++;
         centro=((sup-inf)/2)+inf;
-        // printf("%ld\n", v[centro].dni);
         fseek(binario, centro*t, SEEK_SET);
         fread(&dniAct, sizeof(long int), 1, binario);
+        // printf("%ld\n", dniAct);
         fread(&posAct, sizeof(long int), 1, binario);
         fseek(binario, 0, SEEK_SET); //me reubico
 
