@@ -26,6 +26,7 @@ struct nodo{//DEBO PONERLE NOMBRE AL INICIO
 typedef struct nodo nodo;
 typedef nodo* lista;
 
+void cargarLista(FILE *, int *, lista *);
 int buscarPersonaBinario(FILE *, FILE *, long int, Persona *);
 int contarLineas(FILE *);
 int busquedaDicotomicaPosBinario(FILE *, long int, int *);
@@ -43,10 +44,8 @@ void liberarLista(lista*);
 int main(){
     Persona pBuscada;
     lista l;
-    campo p;
     FILE *personas, *binario;
-    char aux2[100];//tiene que ser grande para poder leer cada renglon completo sin repetir
-    int aux, diml=0, accesosDisco;
+    int diml=0, accesosDisco;
     long int dni;
 
     binario=fopen("personas.idx", "wb+");//porque desp lo quiero leer
@@ -59,9 +58,38 @@ int main(){
         printf("Error en el archivo csv\n");
         return 1;
     }
-    inicializarLista(&l);
 
-    //no leo un archivo binario, por ende no es necesario conocer como se cargaron los datos para saber el peso de cada persona y moverme de a personas
+    inicializarLista(&l);
+    cargarLista(personas, &diml, &l);
+    cargarBinario(binario, l);//12a
+    // imprimirArchivo(binario);
+
+    printf("Ingrese dni de la persona a buscar: ");//12b
+    scanf("%ld", &dni);
+    if(buscarPersonaLista(personas, l, dni, &pBuscada, diml)==-1)
+        printf("Persona no encontrada\n");
+    else
+        imprimirPersona(pBuscada);
+
+    accesosDisco=buscarPersonaBinario(personas, binario, dni, &pBuscada);//12c
+    if(accesosDisco==0)
+        printf("Persona no encontrada\n");
+    else{
+        printf("cant de acceso al disco: %d\n", accesosDisco);
+        imprimirPersona(pBuscada);
+    }
+
+    liberarLista(&l);
+    fclose(binario);
+    fclose(personas);
+    return 0;
+}
+
+void cargarLista(FILE *personas, int * diml, lista * l){
+    char aux2[100];//tiene que ser grande para poder leer cada renglon completo sin repetir
+    campo p;
+    int aux;
+        //no leo un archivo binario, por ende no es necesario conocer como se cargaron los datos para saber el peso de cada persona y moverme de a personas
     fgets(aux2, 100, personas);//leo titulos, mandarle la cant de su tamanio
 
     p.pos=ftell(personas);
@@ -70,37 +98,13 @@ int main(){
         // printf("id: %d dni:%ld \n", aux, p.dni);
         fgets(aux2, 100, personas);//leo el resto
         
-        insertarOrdenadoDescendente(&l, p);
-        diml++;
+        insertarOrdenadoDescendente(l, p);
+        (*diml)++;
         p.pos=ftell(personas);
     }
 
     // printf("eof: %d\n", aux); //da 5000 porque la ultima iteracion no le carga nada a aux
     // imprimirLista(l);
-    cargarBinario(binario, l);
-    // imprimirArchivo(binario);
-
-    printf("Ingrese dni de la persona a buscar: ");
-    scanf("%ld", &dni);
-    // if(buscarPersonaLista(personas, l, dni, &pBuscada, diml)==-1)
-    //     printf("Persona no encontrada\n");
-    // else
-    //     imprimirPersona(pBuscada);
-
-
-    accesosDisco=buscarPersonaBinario(personas, binario, dni, &pBuscada);
-    if(accesosDisco==0)
-        printf("Persona no encontrada\n");
-    else{
-        printf("cant de acceso al disco: %d\n", accesosDisco);
-        imprimirPersona(pBuscada);
-    }
-
-
-    liberarLista(&l);
-    fclose(binario);
-    fclose(personas);
-    return 0;
 }
 
 int buscarPersonaBinario(FILE *personas, FILE *binario, long int dni, Persona *p){
@@ -178,6 +182,7 @@ void imprimirPersona(Persona p){
     printf("correo: %s\t", p.correo);
     printf("ciudad: %s\t", p.ciudad);
     printf("pais: %s\t", p.pais);
+    printf("\n");
 }
 
 int buscarPersonaLista(FILE *personas, lista l, long int dni, Persona *p, int diml){//podría poner la diml dentro de la estructura tipo lista
