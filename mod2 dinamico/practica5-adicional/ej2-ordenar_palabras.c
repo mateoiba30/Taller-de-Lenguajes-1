@@ -74,10 +74,10 @@ int crearBinarios(int diml, lista l){
         fseek(vArchivos[i], 0, SEEK_SET);//no olvidar de hacer simepre que escribo
     }
 
-    // for(int i=0; i<CANT_ARCHIVOS; i++){
-    //     printf("ARCHIVO %d\n", i+1);
-    //     imprimirArchivo(vArchivos[i]);
-    // }
+    for(int i=0; i<CANT_ARCHIVOS; i++){
+        printf("ARCHIVO %d\n", i+1);
+        imprimirArchivo(vArchivos[i]);
+    }
     for(int i=0; i<CANT_ARCHIVOS; i++)//no olvidar
         fclose(vArchivos[i]);
     return 0;

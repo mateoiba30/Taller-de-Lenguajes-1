@@ -1,17 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include<time.h>
+
 #ifdef _WIN32
   #include<windows.h>
 #endif
-#include<time.h>
+
+#define MAX 16
 #define LETRAS 26
 //si bien hay funciones que funcionan sin las libreias, es porque C la encuentra a la fuerza, lo mejor es ponerlas
 #define CANT_ARCHIVOS 10
 
+typedef struct{
+    char palabra[MAX];
+    float dificultad;
+} Palabra;
+
 //declaramos las funciones que vamos a usar
 //esto es una buena practica para convertir datos del tipo erroneo en el necesitado y por otros temas
-void palabra_random(int, char[]);
+int palabra_random(int, char[]);
 int verificar_palabra(char[], char[], int);
 void perdiste(char[]);
 void ganaste(void);
@@ -34,28 +42,36 @@ int main()
 {
     char abecedario[26]={'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     char palabra[256], guiones[256], letras_equivocadas[26];//asignamos direccion f�sica a los vectores
-    int longitud, vidas=6, diml_equivocadas=-1;//diml_equivocadas=-1 no significa ninguna posicion, es para decir que est� vac�o
+    int estado, longitud, vidas=6, diml_equivocadas=-1;//diml_equivocadas=-1 no significa ninguna posicion, es para decir que est� vac�o
 
     titulo();
-    if(generar_palabra(abecedario, palabra, &longitud)==0){//vemos la palabra y su longitud, la cual mandamos la direccion de longitud para omodificarla con punteros
+    estado=generar_palabra(abecedario, palabra, &longitud);
+    if(estado==0){//vemos la palabra y su longitud, la cual mandamos la direccion de longitud para omodificarla con punteros
         inicializar_guiones(guiones,longitud);//creamos una cadena de guiones de igual tama�o que la palabra
         actualizacion_de_pantalla(guiones, longitud, vidas,letras_equivocadas, diml_equivocadas);
         getchar(); //son demasiado importantes los getchar() para poder leer la letra ingresada y no el enter
         adivinar_palabra(abecedario, palabra, &vidas, longitud, letras_equivocadas, diml_equivocadas, guiones);//solo modifico las vidas mientras trato de jugar
         fin_del_juego(palabra, vidas);//mensaje de fin
     }
-    else
-        printf("saliste del juego\n");
+    else{
+        if(estado==1)
+            printf("saliste del juego\n");
+        else
+            printf("problema al generar palabra random\n");
+
+    }
 
     return 0;//el main devuleve cero por defecto para verificar que la ejecucion sea correcta
 }
 
-void palabra_random(int dificultad, char palabra[]){
-    int posArchivo;
+int palabra_random(int dificultad, char palabra[]){
+    int posArchivo, nroPalabra, cantPalabras=0;
     FILE * vArchivos[CANT_ARCHIVOS];
     char nombresArchivos[CANT_ARCHIVOS][50]={"bloque1.txt", "bloque2.txt", "bloque3.txt", "bloque4.txt", "bloque5.txt", "bloque6.txt", "bloque7.txt", "bloque8.txt", "bloque9.txt", "bloque10.txt"};
+    Palabra p;
+    
     for(int i=0; i<CANT_ARCHIVOS; i++){
-        vArchivos[i]=fopen(nombresArchivos[i], "wb+");
+        vArchivos[i]=fopen(nombresArchivos[i], "rb");//si uso wb+ me reescribe el archivo
         if(vArchivos[i]==NULL){
             printf("error al abrir archivo %d\n", i+1);
             return 1;
@@ -64,10 +80,23 @@ void palabra_random(int dificultad, char palabra[]){
 
     posArchivo=dificultad-1; //el archivo 10 está en la pos 9
 
-    strcpy(palabra, )
+    while(fread(&p, sizeof(Palabra), 1, vArchivos[posArchivo])!=0)//veo cant de palabras
+        cantPalabras++;
+    fseek(vArchivos[posArchivo], 0, SEEK_SET);
+    printf("cant palabras: %d\n", cantPalabras);
 
-    for(int i=0; i<CANT_ARCHIVOS; i++)
+    nroPalabra=rand()%cantPalabras+1;//elijo a una random
+
+    for(int i=0; i<nroPalabra; i++)//la busco
+        fread(&p, sizeof(Palabra), 1, vArchivos[posArchivo]);
+    fseek(vArchivos[posArchivo], 0, SEEK_SET);
+
+    strcpy(palabra, p.palabra);//la copio
+
+    for(int i=0; i<CANT_ARCHIVOS; i++)//cierro archivo
         fclose(vArchivos[i]);
+
+    return 0;
 }
 int verificar_palabra(char abecedario[], char palabra[], int longitud){
     int fin=0, i=0;
@@ -225,7 +254,8 @@ int generar_palabra(char abecedario[], char palabra[], int *longitud){//solo mod
             printf("ingrese dificultad entre 1 y 10 (10 para capos): \n");
             scanf("%d", &dificultad);
 
-            palabra_random(dificultad, palabra);//recibe un puntero a una palabra
+            if(palabra_random(dificultad, palabra)==1)//recibe un puntero a una palabra
+                return 2;
             *longitud=strlen(palabra);//no olvidar de poner el * para operar con el valor y no la direccion
             terminar=1;
         }
