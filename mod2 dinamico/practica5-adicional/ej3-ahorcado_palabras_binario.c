@@ -42,23 +42,30 @@ int main()
 {
     char abecedario[26]={'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     char palabra[256], guiones[256], letras_equivocadas[26];//asignamos direccion f�sica a los vectores
-    int estado, longitud, vidas=6, diml_equivocadas=-1;//diml_equivocadas=-1 no significa ninguna posicion, es para decir que est� vac�o
+    int estado=0, longitud, vidas, diml_equivocadas;
+    srand(time(NULL));
 
     titulo();
-    estado=generar_palabra(abecedario, palabra, &longitud);
-    if(estado==0){//vemos la palabra y su longitud, la cual mandamos la direccion de longitud para omodificarla con punteros
-        inicializar_guiones(guiones,longitud);//creamos una cadena de guiones de igual tama�o que la palabra
-        actualizacion_de_pantalla(guiones, longitud, vidas,letras_equivocadas, diml_equivocadas);
-        getchar(); //son demasiado importantes los getchar() para poder leer la letra ingresada y no el enter
-        adivinar_palabra(abecedario, palabra, &vidas, longitud, letras_equivocadas, diml_equivocadas, guiones);//solo modifico las vidas mientras trato de jugar
-        fin_del_juego(palabra, vidas);//mensaje de fin
-    }
-    else{
-        if(estado==1)
-            printf("saliste del juego\n");
-        else
-            printf("problema al generar palabra random\n");
+    while(estado==0){
+        vidas=6;
+        diml_equivocadas=-1;//diml_equivocadas=-1 no significa ninguna posicion, es para decir que est� vac�o
+        
+        estado=generar_palabra(abecedario, palabra, &longitud);
+        titulo();
+        if(estado==0){//vemos la palabra y su longitud, la cual mandamos la direccion de longitud para omodificarla con punteros
+            inicializar_guiones(guiones,longitud);//creamos una cadena de guiones de igual tama�o que la palabra
+            actualizacion_de_pantalla(guiones, longitud, vidas,letras_equivocadas, diml_equivocadas);
+            getchar(); //son demasiado importantes los getchar() para poder leer la letra ingresada y no el enter
+            adivinar_palabra(abecedario, palabra, &vidas, longitud, letras_equivocadas, diml_equivocadas, guiones);//solo modifico las vidas mientras trato de jugar
+            fin_del_juego(palabra, vidas);//mensaje de fin
+        }
+        else{
+            if(estado==1)
+                printf("saliste del juego\n");
+            else
+                printf("problema al generar palabra random\n");
 
+        }
     }
 
     return 0;//el main devuleve cero por defecto para verificar que la ejecucion sea correcta
