@@ -10,10 +10,11 @@ typedef struct{
 
 void cargarBinario(FILE*, FILE*);
 float obtenerDificultad(char [], int*);
+void imprimirArchivo(FILE *);
 
 int main(){
     FILE *texto, *binario;
-    binario=fopen("personas.idx", "wb");
+    binario=fopen("palabrasDificultad.txt", "wb+");
     if(binario==NULL){
         printf("Error en el archivo binario\n");
         return 1;
@@ -23,12 +24,15 @@ int main(){
         printf("Error en el archivo txt\n");
         return 1;
     }
+    // char aux='ñ';
+    // printf("%d", aux);
 
-    int aux;
-    printf("dificultad de mateo: %f\n", obtenerDificultad("mñateo", &aux));
-    if(aux==1)
-        printf("palabra con enie\n");
-    // cargarBinario(binario, texto);
+    // int problema=0;
+    // printf("dificultad de mateo: %f", obtenerDificultad("mateo", &problema));
+    // if(problema==1)
+    //     printf("tiene enie");
+    cargarBinario(binario, texto);
+    imprimirArchivo(binario);
 
     fclose(binario);
     fclose(texto);
@@ -41,8 +45,10 @@ void cargarBinario(FILE*binario, FILE*texto){
 
     while(fscanf(texto, "%s", p.palabra)!=EOF){//scanf no incluye el \n pero corta en espacios (no es un problema en las palabras)
         p.dificultad=obtenerDificultad(p.palabra, &problema);
-        if(problema==0)
+        if(problema==0){
+            // printf("%s\t%f\n", p.palabra, p.dificultad);
             fwrite(&p, sizeof(Palabra), 1, binario);
+        }
     }
     fseek(binario, 0, SEEK_SET);
 }
@@ -50,15 +56,17 @@ void cargarBinario(FILE*binario, FILE*texto){
 float obtenerDificultad(char palabra[], int *problema){
     float frecuencias[ABC]={12.53, 1.42, 4.68, 5.86, 13.68, 0.69, 1.01, 0.7, 6.25, 0.44, 0.01, 4.97, 3.15, 
                             6.71, 8.68, 2.51, 0.88, 6.87, 7.98, 4.63, 3.93, 0.9, 0.02, 0.22, 0.9, 0.52};
-    char cAct, aux='a';
+    char cAct, aux='a', aux2=aux-'A';
     int i=0;
     float dificultad=0;
 
     (*problema)=0;
     cAct=palabra[i];
     while(cAct!='\0' && (*problema)==0){
-        printf("%d ", cAct);
-        if(cAct==-61)// 'ñ' en ascii extendido
+        if(cAct>='A' && cAct <= 'Z')
+            cAct=cAct+aux2;
+        // printf("%d ", cAct);
+        if(cAct==-61)// reconoce error ante ñ o Ñ
             (*problema)=1;
         dificultad+=frecuencias[cAct-aux];
 
@@ -67,4 +75,12 @@ float obtenerDificultad(char palabra[], int *problema){
     }
 
     return dificultad;
+}
+
+void imprimirArchivo(FILE *binario){
+    Palabra p;
+    while (fread(&p, sizeof(Palabra), 1, binario) !=0)
+        printf("%s\t%f\n", p.palabra, p.dificultad);
+
+    fseek(binario, 0, SEEK_SET);//no olvidar
 }
