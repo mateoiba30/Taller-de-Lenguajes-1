@@ -68,7 +68,7 @@ int analizarPalabra(char palabra[], float * dificultad, int *cantLetras){
         // printf("%d ", cAct);
         if(cAct==-61)// reconoce error ante ñ o Ñ
             return 1;
-        (*dificultad)+=frecuencias[cAct-aux];
+        (*dificultad)+=(frecuencias[cAct-aux]*frecuencias[cAct-aux]);//la dificultad es la sumatoria de frecuenfias al cuadrado de cada letra
 
         i++;
         cAct=palabra[i];
