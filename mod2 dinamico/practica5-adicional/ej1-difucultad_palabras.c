@@ -25,7 +25,7 @@ int main(){
     }
 
     int aux;
-    printf("dificultad de mateo: %f\n", obtenerDificultad("mateo", &aux));
+    printf("dificultad de mateo: %f\n", obtenerDificultad("mñateo", &aux));
     if(aux==1)
         printf("palabra con enie\n");
     // cargarBinario(binario, texto);
@@ -54,9 +54,11 @@ float obtenerDificultad(char palabra[], int *problema){
     int i=0;
     float dificultad=0;
 
+    (*problema)=0;
     cAct=palabra[i];
     while(cAct!='\0' && (*problema)==0){
-        if(cAct=164)// 'ñ' en ascii extendido
+        printf("%d ", cAct);
+        if(cAct==-61)// 'ñ' en ascii extendido
             (*problema)=1;
         dificultad+=frecuencias[cAct-aux];
 
