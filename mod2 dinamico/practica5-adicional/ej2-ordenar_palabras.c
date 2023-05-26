@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX 16
+#define CANT_ARCHIVOS 10
 
 typedef struct{
     char palabra[MAX];
@@ -15,6 +16,8 @@ struct nodo{//DEBO PONERLE NOMBRE AL INICIO
 typedef struct nodo nodo;
 typedef nodo* lista;
 
+int dividirBinario(int, lista);
+void longitudArchivos(int[], int);
 void cargarLista(FILE *, lista *, int*);
 void inicializarLista(lista*);
 void insertarOrdenadoDescendente(lista*, Palabra);
@@ -33,11 +36,46 @@ int main(){
     int diml=0;
     inicializarLista(&l);
     cargarLista(binario, &l, &diml);
-    imprimirLista(l);
+    // imprimirLista(l);
+    if(dividirBinario(diml, l)==1)
+        return 1;
 
     liberarLista(&l);
     fclose(binario);
     return 0;
+}
+
+int dividirBinario(int diml, lista l){
+    int cantPalabras[CANT_ARCHIVOS]={0};
+    longitudArchivos(cantPalabras, diml);
+    FILE * vArchivos[CANT_ARCHIVOS];
+    char nombresArchivos[CANT_ARCHIVOS][50]={"bloque1.txt", "bloque2.txt", "bloque3.txt", "bloque4.txt", "bloque5.txt", "bloque6.txt", "bloque7.txt", "bloque8.txt", "bloque9.txt", "bloque10.txt"};
+
+    for(int i=0; i<CANT_ARCHIVOS; i++){
+        vArchivos[i]=fopen(nombresArchivos[i], "wb+");
+        if(vArchivos[i]==NULL){
+            printf("error al abrir archivo %d\n", i+1);
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+void longitudArchivos(int cantPalabras[], int diml){
+    int largo, resto, i;
+
+    largo=diml / CANT_ARCHIVOS;//sobran entre 0 y 9 palabras
+    resto= diml % CANT_ARCHIVOS;
+
+    for(i=0; i<CANT_ARCHIVOS; i++){
+        if(resto>0){
+            cantPalabras[i]=largo + 1;
+            resto--;
+        }
+        else
+            cantPalabras[i]=largo;
+    }
 }
 
 void cargarLista(FILE *binario, lista *l, int* diml){
@@ -49,6 +87,7 @@ void cargarLista(FILE *binario, lista *l, int* diml){
     }
 }
 
+//podría haber hecho una busqueda binaria
 void insertarOrdenadoDescendente( lista* l, Palabra dato){
     lista nue, ant, act;
     nue=(lista)malloc(sizeof(nodo));//reservo mem
