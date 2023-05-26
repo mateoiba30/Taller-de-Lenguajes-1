@@ -1,1 +1,1 @@
-        // printf("%d ", cAct);
+imprimirArchivo

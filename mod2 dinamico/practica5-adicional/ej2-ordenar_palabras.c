@@ -16,13 +16,14 @@ struct nodo{//DEBO PONERLE NOMBRE AL INICIO
 typedef struct nodo nodo;
 typedef nodo* lista;
 
-int dividirBinario(int, lista);
+int crearBinarios(int, lista);
 void longitudArchivos(int[], int);
 void cargarLista(FILE *, lista *, int*);
 void inicializarLista(lista*);
 void insertarOrdenadoDescendente(lista*, Palabra);
 void imprimirLista(lista);
 void liberarLista(lista*);
+void imprimirArchivo(FILE *);
 
 int main(){
     FILE *binario;
@@ -37,7 +38,7 @@ int main(){
     inicializarLista(&l);
     cargarLista(binario, &l, &diml);
     // imprimirLista(l);
-    if(dividirBinario(diml, l)==1)
+    if(crearBinarios(diml, l)==1)
         return 1;
 
     liberarLista(&l);
@@ -45,7 +46,7 @@ int main(){
     return 0;
 }
 
-int dividirBinario(int diml, lista l){
+int crearBinarios(int diml, lista l){
     int cantPalabras[CANT_ARCHIVOS]={0};
     longitudArchivos(cantPalabras, diml);
     FILE * vArchivos[CANT_ARCHIVOS];
@@ -58,6 +59,25 @@ int dividirBinario(int diml, lista l){
             return 1;
         }
     }
+
+    lista aux=l;
+    for(int i=0; i<CANT_ARCHIVOS; i++){//se cuantos archivos tengo
+        //  printf("ARCHIVO %d\n", i+1);
+
+        for(int j=0; j<cantPalabras[i]; j++){//se cuantas palabras debo escribir
+            fwrite(&aux->dato, sizeof(Palabra), 1, vArchivos[i]);
+            // printf("%s\t%f\n", aux->dato.palabra, aux->dato.dificultad);
+
+            aux=aux->sig;
+        }
+
+        fseek(vArchivos[i], 0, SEEK_SET);//no olvidar de hacer simepre que escribo
+    }
+
+    // for(int i=0; i<CANT_ARCHIVOS; i++){
+    //     printf("ARCHIVO %d\n", i+1);
+    //     imprimirArchivo(vArchivos[i]);
+    // }
 
     return 0;
 }
@@ -130,4 +150,12 @@ void liberarLista(lista* l){
         (*l)=(*l)->sig;
         free(aux);
     }
+}
+
+void imprimirArchivo(FILE *binario){
+    Palabra p;
+    while (fread(&p, sizeof(Palabra), 1, binario) !=0)
+        printf("%s\t%f\n", p.palabra, p.dificultad);
+
+    fseek(binario, 0, SEEK_SET);//no olvidar
 }
