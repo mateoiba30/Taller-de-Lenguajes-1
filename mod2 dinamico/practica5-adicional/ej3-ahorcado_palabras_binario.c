@@ -63,6 +63,9 @@ void palabra_random(int dificultad, char palabra[]){
     }
 
     posArchivo=dificultad-1; //el archivo 10 está en la pos 9
+
+    strcpy(palabra, )
+
     for(int i=0; i<CANT_ARCHIVOS; i++)
         fclose(vArchivos[i]);
 }
