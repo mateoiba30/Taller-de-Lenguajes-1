@@ -7,6 +7,7 @@
 #include<time.h>
 #define LETRAS 26
 //si bien hay funciones que funcionan sin las libreias, es porque C la encuentra a la fuerza, lo mejor es ponerlas
+#define CANT_ARCHIVOS 10
 
 //declaramos las funciones que vamos a usar
 //esto es una buena practica para convertir datos del tipo erroneo en el necesitado y por otros temas
@@ -50,20 +51,20 @@ int main()
 }
 
 void palabra_random(int dificultad, char palabra[]){
-    int x;
-    char *palabras_random[]={"parcialmente","mitocondria","excelente","llaveros","especial","trapecio","escualido","aereo","pulpo","pulpa","limpia","caverna","torpedo","cigarro","tactil","tecla","nave","listo","bueno","boca","mio","leo","buen","tia","mia","pais"};
-    //hacemos un vector de punteros a cadena de caracteres para no tener que hacer un vector con vectores del tama�o de la palabra m�s grande
-    int tamano_vector = 27;
-    srand(time(NULL));//para generar numero random distinto en cada ejecucion
-
-    switch(dificultad){//las palabras mas dificiles son las ultimas, porqwue tienen menos caracteres y no tinenen muchas caracteres repetidos
-        case 1:x=rand()%((tamano_vector/3)-1);break;//cada tercio representa una dificultad
-        case 2: x=9+rand()%((tamano_vector/3)-1);break;//rand() genera varios numeros random, si me quedo con su resto al dividir por ej 3, me devuelve 0 1 o 2
-        default: x= 18 + rand()%((tamano_vector/3)-1);break;//sumo 18 para no repetir nos random de las lineas de arriba
+    int posArchivo;
+    FILE * vArchivos[CANT_ARCHIVOS];
+    char nombresArchivos[CANT_ARCHIVOS][50]={"bloque1.txt", "bloque2.txt", "bloque3.txt", "bloque4.txt", "bloque5.txt", "bloque6.txt", "bloque7.txt", "bloque8.txt", "bloque9.txt", "bloque10.txt"};
+    for(int i=0; i<CANT_ARCHIVOS; i++){
+        vArchivos[i]=fopen(nombresArchivos[i], "wb+");
+        if(vArchivos[i]==NULL){
+            printf("error al abrir archivo %d\n", i+1);
+            return 1;
+        }
     }
-    //si quiciera devolver el puntero al vector, el vector palabras_random deber�a ser static debido a que se pierde esa variable y se puede moidficar a lo que apunta
-    //la mejor opci�n es ocpiar el resultado en palabra random
-    strcpy(palabra, palabras_random[x]);//paso de puntero al primer caracter (conoce el fin porque luego de cada palabra hay '/0') a un vector con dimension l�gica
+
+    posArchivo=dificultad-1; //el archivo 10 está en la pos 9
+    for(int i=0; i<CANT_ARCHIVOS; i++)
+        fclose(vArchivos[i]);
 }
 int verificar_palabra(char abecedario[], char palabra[], int longitud){
     int fin=0, i=0;
@@ -120,7 +121,6 @@ void actualizacion_de_pantalla(char guiones[], int longitud, int vidas, char let
     imprimir_muneco(vidas);
     printf("\n \n");
 }
-
 void imprimir_muneco(int vidas){
 
     switch(vidas){
@@ -219,8 +219,9 @@ int generar_palabra(char abecedario[], char palabra[], int *longitud){//solo mod
         scanf("%c", &cant_jugadores);
 
         if(cant_jugadores=='1'){
-            printf("ingrese dificultad entre 1 y 3 (3 para capos): \n");
+            printf("ingrese dificultad entre 1 y 10 (10 para capos): \n");
             scanf("%d", &dificultad);
+
             palabra_random(dificultad, palabra);//recibe un puntero a una palabra
             *longitud=strlen(palabra);//no olvidar de poner el * para operar con el valor y no la direccion
             terminar=1;

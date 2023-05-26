@@ -78,7 +78,8 @@ int crearBinarios(int diml, lista l){
     //     printf("ARCHIVO %d\n", i+1);
     //     imprimirArchivo(vArchivos[i]);
     // }
-
+    for(int i=0; i<CANT_ARCHIVOS; i++)//no olvidar
+        fclose(vArchivos[i]);
     return 0;
 }
 
