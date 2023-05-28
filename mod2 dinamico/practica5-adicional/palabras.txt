@@ -930,4 +930,5 @@ parlamentario
 representante
 administracion
 caracteristica
+caracteristico
 entretenimiento
