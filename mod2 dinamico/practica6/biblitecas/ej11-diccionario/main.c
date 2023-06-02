@@ -1,8 +1,8 @@
-#include <stdio.h>
-#include <string.h>
+
 #include "diccionario.h"
 
 int main(){
+    mensaje();
     Dicc * d= crearDiccionario();//HACER EL CREAR QUE DEVUELVA ALGO, SINO SE COMPLICA
 
     imprimirDicc(*d);

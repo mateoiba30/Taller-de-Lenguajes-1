@@ -1,6 +1,8 @@
 #ifndef DICCIONARIO_H_INCLUDED
 #define DICCIONARIO_H_INCLUDED
 
+#include <stdio.h>
+#include <string.h>
 #include <stdlib.h>//para malloc
 #define MAX_LONG 100
 
@@ -27,5 +29,7 @@ int guardarEnTxt(char[], Dicc);//ANDA
 void destruirDiccionario(Dicc *);//ANDA
 void imprimirDicc(Dicc);//ANDA
 int tamanio(Dicc);//ANDA
+
+void mensaje();
 
 #endif
