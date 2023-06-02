@@ -1,14 +1,6 @@
 #include <stdio.h>
 #include "istack.h"
 
-struct nodo{
-    int dato;
-    struct nodo* sig;
-};
-
-typedef struct nodo nodo;
-typedef nodo* stack;
-
 int main(){
 
     stack* s;
@@ -20,12 +12,19 @@ int main(){
 
     while(n!=0){
         s_push(s, n);
-
+        printf("Elemento en el tope: %d\n", s_top((*s)));
+        
         printf("Ingrese otro numero\n");
         scanf("%d", &n);
     }
 
-    printf("tamanio de la pila: %d", s_length((*s)) );
+    imprimirStack((*s));
+    printf("tamanio de la pila: %d\n", s_length((*s)) );
+
+    while(!s_empty(*s))
+        s_pop(s);
+    printf("tamanio despues de desapilar: %d\n", s_length((*s)));
+    imprimirStack((*s));
 
     return 0;
 }

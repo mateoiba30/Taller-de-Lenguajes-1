@@ -2,17 +2,10 @@
 #include "istack.h"
 
 //s=1erDato -> 2doDato -> ... -> ultimoDatoADesapilar
-struct nodo{
-    int dato;
-    struct nodo* sig;
-};
-
-typedef struct nodo nodo;
-typedef nodo* stack;
-
-stack* a_create(){
-    stack * s;
-    (*s)=NULL;
+Sstack* s_create(){
+    Sstack * s;
+    s = (stack*)malloc(sizeof(stack));
+    (*s).pila=NULL;
     return s;
 }
 
@@ -53,11 +46,20 @@ int s_length(stack s){
     int tamanio=0;
     stack aux=s;
 
-    while(aux->sig!=NULL){
+    while(aux!=NULL){//si no estoy en null tengo un elemento, no hago aux->sig!=NULL porque si solo tengo 1 elemento su siguiente es null y diria que es de tamanio 0
         aux=aux->sig;
         tamanio++;
     }
 
     return tamanio;
+
+}
+
+void imprimirStack(stack s){
+    stack aux=s;
+        for(int i=0; i<s_length(s) ; i++){
+            printf("%d, ",aux->dato);
+            aux=aux->sig;
+    }
 
 }
