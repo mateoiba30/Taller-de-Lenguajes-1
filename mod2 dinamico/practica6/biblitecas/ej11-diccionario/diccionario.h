@@ -2,6 +2,7 @@
 #define DICCIONARIO_H_INCLUDED
 
 #include <stdlib.h>//para malloc
+#define MAX_LONG 100
 
 struct nodo{
     char dato[50];

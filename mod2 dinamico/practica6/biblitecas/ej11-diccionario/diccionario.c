@@ -7,7 +7,7 @@ void crearDiccionario(Slista* l){
     (*l).tamanio=0;
 }
 
-void agregarPalabra( Slista* l, int dato){
+int agregarPalabraOrdenada( Slista* l, char dato[]){
     (*l).tamanio++;
     lista ant, act;
     int agrego=0;
@@ -15,7 +15,7 @@ void agregarPalabra( Slista* l, int dato){
     act=(*l).l;
     ant=(*l).l;
 
-    while(act!=NULL && act->dato < dato){
+    while(act!=NULL && strcmp(act->dato, dato)<0 ){
         ant=act;
         act=act->sig;
     }
@@ -52,9 +52,11 @@ int existePalabra(Slista sl, char palabra[]){
 }
 
 int eliminarPalabra(Slista sl, char palabra[]){
+    int elimine=0;
     lista act=sl.l, aux, ant;//recorro con auxiliar para no perder el 1er puntero
     while(act!=NULL){
         if(strcmp(act->dato, palabra)){//si hay q 
+            int elimine=1;
             aux=act;
             if(act==sl.l)//no ol
                 sl.l=sl.l->sig;
@@ -69,5 +71,49 @@ int eliminarPalabra(Slista sl, char palabra[]){
             ant=act;
             act=act->sig;//sinó solo avanzo
         }
+    }
+
+    return elimine;
+}
+
+int cargarDesdeTxt(char nombre_txt[], Slista* l){
+    char palabra_act[MAX_LONG];
+    FILE * f = open (nombre_txt, "r");
+    if (f == NULL){
+        printf ("Error\n");
+        return 0;
+    }
+
+    while(fscanf(f, "%s", palabra_act)!=EOF){
+        agregarPalabraOrdenada(l, palabra_act);
+    }
+
+    fclose(f);
+    return 1;
+}
+
+int guardarEnTxt(char nombre_txt[], Slista sl){
+    FILE * f = open (nombre_txt, "w");
+    if (f == NULL){
+        printf ("Error\n");
+        return 0;
+    }
+
+    lista act=sl.l;
+    while(act!=NULL){
+        fprintf(f, "%s\n", act->dato);
+    }
+
+    fclose(f);
+    return 1;
+}
+
+void destruirDiccionario(Slista *l){
+    lista aux;//no perder el inicio de la lista para borrar
+
+    for(int i=0; i<(*l).tamanio; i++){
+        aux=(*l).l;
+        (*l).l=(*l).l->sig;//siempre voy borrando el 1ro de la lista
+        free(aux);
     }
 }
