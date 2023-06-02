@@ -20,8 +20,8 @@ typedef struct{
 //prototipos de diccionario.c
 Dicc* crearDiccionario();//ANDA
 int agregarPalabraOrdenada( Dicc*, char[]);//ANDA
-// int existePalabra(Dicc, char[]);
-int eliminarPalabra(Dicc, char[]);
+int existePalabra(Dicc, char[]);//ANDA
+int eliminarPalabra(Dicc*, char[]);//ANDA
 int cargarDesdeTxt(char [], Dicc*);
 int guardarEnTxt(char[], Dicc);
 void destruirDiccionario(Dicc *);

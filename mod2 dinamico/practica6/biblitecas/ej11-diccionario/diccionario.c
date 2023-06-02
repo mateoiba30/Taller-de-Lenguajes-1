@@ -42,35 +42,34 @@ int agregarPalabraOrdenada( Dicc* l, char dato[]){
     return agrego;
 }
 
-// int existePalabra(Dicc sl, char palabra[]){
-//     int encontre=0;
-//     lista act=sl.l, ant;//recorro con auxiliar para no perder el 1er puntero
-//     while(act!=NULL && encontre==0){
-//         if(strcmp(palabra,act->dato)==0)
-//             encontre=1;
-//         else{
-//             ant=act;
-//             act=act->sig;//sinó solo avanzo
-//         }
-//     }
-//     return encontre;
-// }
+int existePalabra(Dicc sl, char palabra[]){
+    int encontre=0;
+    lista act=sl.l;//recorro con auxiliar para no perder el 1er puntero
+    while(act!=NULL && encontre==0){
+        if(strcmp(palabra,act->dato)==0)
+            encontre=1;
+        else
+            act=act->sig;//sinó solo avanzo
+    }
+    return encontre;
+}
 
-int eliminarPalabra(Dicc sl, char palabra[]){
+int eliminarPalabra(Dicc *sl, char palabra[]){
     int elimine=0;
-    lista act=sl.l, aux, ant;//recorro con auxiliar para no perder el 1er puntero
+    lista act=(*sl).l, aux, ant;//recorro con auxiliar para no perder el 1er puntero
     while(act!=NULL){
-        if(strcmp(act->dato, palabra)){//si hay q 
-            elimine=1;
+        if(strcmp(act->dato, palabra)==0){//si hay q borrar
+            elimine=1;//ojo que si son iguales devuelve 0, no 1!!!!!!
             aux=act;
-            if(act==sl.l)//no ol
-                sl.l=sl.l->sig;
+            if(act==(*sl).l)//no ol
+                (*sl).l=(*sl).l->sig;
             else
                 ant->sig=act->sig;
             
             aux=act->sig;
             free(act);
             act=aux;
+            (*sl).tamanio--;
         }
         else{
             ant=act;
