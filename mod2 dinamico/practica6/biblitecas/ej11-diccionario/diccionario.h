@@ -5,7 +5,7 @@
 #define MAX_LONG 100
 
 struct nodo{
-    char dato[50];
+    char dato[MAX_LONG];
     struct nodo* sig;
 };
 
@@ -15,8 +15,17 @@ typedef nodo* lista;
 typedef struct{
     lista l;
     int tamanio;
-} Slista;
+} Dicc;
 
 //prototipos de diccionario.c
+Dicc* crearDiccionario();//ANDA
+int agregarPalabraOrdenada( Dicc*, char[]);//ANDA
+// int existePalabra(Dicc, char[]);
+int eliminarPalabra(Dicc, char[]);
+int cargarDesdeTxt(char [], Dicc*);
+int guardarEnTxt(char[], Dicc);
+void destruirDiccionario(Dicc *);
+void imprimirDicc(Dicc);//ANDA
+int tamanio(Dicc);//ANDA
 
 #endif

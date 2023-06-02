@@ -2,16 +2,17 @@
 #include <string.h>
 #include "diccionario.h"
 
-void crearDiccionario(Slista* l){
+Dicc* crearDiccionario(){
+    Dicc* l;
+    l = (Dicc*)malloc(sizeof(Dicc));//debo reservar memoria para el puntero a la pila tambien
     (*l).l=NULL;
     (*l).tamanio=0;
+    return l;
 }
 
-int agregarPalabraOrdenada( Slista* l, char dato[]){
-    (*l).tamanio++;
+int agregarPalabraOrdenada( Dicc* l, char dato[]){
     lista ant, act;
     int agrego=0;
-
     act=(*l).l;
     ant=(*l).l;
 
@@ -19,7 +20,9 @@ int agregarPalabraOrdenada( Slista* l, char dato[]){
         ant=act;
         act=act->sig;
     }
-    if(strcmp(act->dato, dato)!=0){//cuando ya no es menor puede ser igual, en ese caso no ingresar nada
+
+    //ojo que puede llegar a ser null
+    if(act==NULL || strcmp(act->dato, dato)!=0){//cuando ya no es menor puede ser igual, en ese caso no ingresar nada
         agrego=1;
         lista nue;
         nue=(lista)malloc(sizeof(nodo));//reservo mem
@@ -32,31 +35,33 @@ int agregarPalabraOrdenada( Slista* l, char dato[]){
             (*l).l=nue;
         else
             ant->sig =nue;
+
+
     }
 
     return agrego;
 }
 
-int existePalabra(Slista sl, char palabra[]){
-    int encontre=0;
-    lista act=sl.l, ant;//recorro con auxiliar para no perder el 1er puntero
-    while(act!=NULL && encontre==0){
-        if(strcmp(palabra,act->dato)==0)
-            encontre=1;
-        else{
-            ant=act;
-            act=act->sig;//sinó solo avanzo
-        }
-    }
-    return encontre;
-}
+// int existePalabra(Dicc sl, char palabra[]){
+//     int encontre=0;
+//     lista act=sl.l, ant;//recorro con auxiliar para no perder el 1er puntero
+//     while(act!=NULL && encontre==0){
+//         if(strcmp(palabra,act->dato)==0)
+//             encontre=1;
+//         else{
+//             ant=act;
+//             act=act->sig;//sinó solo avanzo
+//         }
+//     }
+//     return encontre;
+// }
 
-int eliminarPalabra(Slista sl, char palabra[]){
+int eliminarPalabra(Dicc sl, char palabra[]){
     int elimine=0;
     lista act=sl.l, aux, ant;//recorro con auxiliar para no perder el 1er puntero
     while(act!=NULL){
         if(strcmp(act->dato, palabra)){//si hay q 
-            int elimine=1;
+            elimine=1;
             aux=act;
             if(act==sl.l)//no ol
                 sl.l=sl.l->sig;
@@ -76,9 +81,9 @@ int eliminarPalabra(Slista sl, char palabra[]){
     return elimine;
 }
 
-int cargarDesdeTxt(char nombre_txt[], Slista* l){
+int cargarDesdeTxt(char nombre_txt[], Dicc* l){
     char palabra_act[MAX_LONG];
-    FILE * f = open (nombre_txt, "r");
+    FILE * f = fopen (nombre_txt, "r");
     if (f == NULL){
         printf ("Error\n");
         return 0;
@@ -92,8 +97,8 @@ int cargarDesdeTxt(char nombre_txt[], Slista* l){
     return 1;
 }
 
-int guardarEnTxt(char nombre_txt[], Slista sl){
-    FILE * f = open (nombre_txt, "w");
+int guardarEnTxt(char nombre_txt[], Dicc sl){
+    FILE * f = fopen (nombre_txt, "w");
     if (f == NULL){
         printf ("Error\n");
         return 0;
@@ -108,7 +113,7 @@ int guardarEnTxt(char nombre_txt[], Slista sl){
     return 1;
 }
 
-void destruirDiccionario(Slista *l){
+void destruirDiccionario(Dicc *l){
     lista aux;//no perder el inicio de la lista para borrar
 
     for(int i=0; i<(*l).tamanio; i++){
@@ -116,4 +121,17 @@ void destruirDiccionario(Slista *l){
         (*l).l=(*l).l->sig;//siempre voy borrando el 1ro de la lista
         free(aux);
     }
+}
+
+void imprimirDicc(Dicc l){
+    lista aux=l.l;
+        for(int i=0; i<l.tamanio ; i++){
+            printf("%s, ",aux->dato);
+            aux=aux->sig;
+        }
+
+}
+
+int tamanio(Dicc d){
+    return d.tamanio;
 }
