@@ -4,28 +4,32 @@
 //s=1erDato -> 2doDato -> ... -> ultimoDatoADesapilar
 Sstack* s_create(){
     Sstack * s;
-    s = (stack*)malloc(sizeof(stack));
+    s = (Sstack*)malloc(sizeof(Sstack));//debo reservar memoria para el puntero a la pila tambien
     (*s).pila=NULL;
+    (*s).tamanio=0;
     return s;
 }
 
-int s_push (stack * s, int x){//como agregar al inicio
+int s_push (Sstack * s, int x){//como agregar al inicio
     stack act;
     act=(stack)malloc(sizeof(nodo));
     act->dato=x;
-    act->sig=(*s);
-    (*s)=act;
+    act->sig=(*s).pila;
+    (*s).pila=act;
+    (*s).tamanio++;
 
     return x;
 }
 
-int s_pop(stack * s){//como eliminar 1er elemento
+int s_pop(Sstack * s){//como eliminar 1er elemento
     stack aux;
     int desapilado;
-    aux=(*s);
-    (*s)=(*s)->sig;
+    aux=(*s).pila;
+    (*s).pila=(*s).pila->sig;
     desapilado=aux->dato;
     free(aux);
+    (*s).tamanio--;
+
     return desapilado;
 }
 
@@ -39,27 +43,16 @@ int s_empty(stack s) {
     return 0;
 }
 
-int s_length(stack s){
-    if(s==NULL)
-        return 0;
-
-    int tamanio=0;
-    stack aux=s;
-
-    while(aux!=NULL){//si no estoy en null tengo un elemento, no hago aux->sig!=NULL porque si solo tengo 1 elemento su siguiente es null y diria que es de tamanio 0
-        aux=aux->sig;
-        tamanio++;
-    }
-
-    return tamanio;
+int s_length(Sstack s){
+    return s.tamanio;
 
 }
 
-void imprimirStack(stack s){
-    stack aux=s;
+void imprimirStack(Sstack s){
+    stack aux=s.pila;
         for(int i=0; i<s_length(s) ; i++){
             printf("%d, ",aux->dato);
             aux=aux->sig;
-    }
-
+        }
+    // printf("hola\n");//pa debuguear
 }

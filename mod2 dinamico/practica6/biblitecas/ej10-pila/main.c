@@ -3,7 +3,7 @@
 
 int main(){
 
-    stack* s;
+    Sstack* s;
     s=s_create();
     int n;
 
@@ -12,7 +12,7 @@ int main(){
 
     while(n!=0){
         s_push(s, n);
-        printf("Elemento en el tope: %d\n", s_top((*s)));
+        printf("Elemento en el tope: %d\n", s_top((*s).pila));
         
         printf("Ingrese otro numero\n");
         scanf("%d", &n);
@@ -21,7 +21,7 @@ int main(){
     imprimirStack((*s));
     printf("tamanio de la pila: %d\n", s_length((*s)) );
 
-    while(!s_empty(*s))
+    while(!s_empty((*s).pila))
         s_pop(s);
     printf("tamanio despues de desapilar: %d\n", s_length((*s)));
     imprimirStack((*s));
