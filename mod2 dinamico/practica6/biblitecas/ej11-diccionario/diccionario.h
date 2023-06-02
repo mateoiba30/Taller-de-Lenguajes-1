@@ -23,8 +23,8 @@ int agregarPalabraOrdenada( Dicc*, char[]);//ANDA
 int existePalabra(Dicc, char[]);//ANDA
 int eliminarPalabra(Dicc*, char[]);//ANDA
 int cargarDesdeTxt(char [], Dicc*);
-int guardarEnTxt(char[], Dicc);
-void destruirDiccionario(Dicc *);
+int guardarEnTxt(char[], Dicc);//ANDA
+void destruirDiccionario(Dicc *);//ANDA
 void imprimirDicc(Dicc);//ANDA
 int tamanio(Dicc);//ANDA
 

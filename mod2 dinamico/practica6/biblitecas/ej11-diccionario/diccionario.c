@@ -106,6 +106,7 @@ int guardarEnTxt(char nombre_txt[], Dicc sl){
     lista act=sl.l;
     while(act!=NULL){
         fprintf(f, "%s\n", act->dato);
+        act=act->sig;//no olvidar de avanzar
     }
 
     fclose(f);
@@ -120,6 +121,7 @@ void destruirDiccionario(Dicc *l){
         (*l).l=(*l).l->sig;//siempre voy borrando el 1ro de la lista
         free(aux);
     }
+    (*l).tamanio=0;
 }
 
 void imprimirDicc(Dicc l){

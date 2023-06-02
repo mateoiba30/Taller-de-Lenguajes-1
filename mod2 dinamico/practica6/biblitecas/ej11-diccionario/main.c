@@ -5,14 +5,10 @@
 int main(){
     Dicc * d= crearDiccionario();//HACER EL CREAR QUE DEVUELVA ALGO, SINO SE COMPLICA
 
-    agregarPalabraOrdenada(d, "matias");
+    imprimirDicc(*d);
+    cargarDesdeTxt("DICCIONARIO.txt", d);
     imprimirDicc(*d);
     
-    if(existePalabra(*d, "matia")==1)
-        printf("la palabra existe en el diccionario\n");
-    else
-        printf("la palabra NO existe en el diccionario\n");
-
 
     return 0;
 }
