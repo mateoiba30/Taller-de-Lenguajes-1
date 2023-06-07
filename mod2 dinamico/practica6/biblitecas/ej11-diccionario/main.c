@@ -1,5 +1,6 @@
 
 #include "diccionario.h"
+void mensaje();
 
 int main(){
     mensaje();

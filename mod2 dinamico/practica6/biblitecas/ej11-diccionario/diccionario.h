@@ -30,6 +30,6 @@ void destruirDiccionario(Dicc *);//ANDA
 void imprimirDicc(Dicc);//ANDA
 int tamanio(Dicc);//ANDA
 
-void mensaje();
+// void mensaje();
 
 #endif
