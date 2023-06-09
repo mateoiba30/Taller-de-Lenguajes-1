@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+
 struct nodo{//DEBO PONERLE NOMBRE AL INICIO
     char dato[255];
     struct nodo* sig;
@@ -39,7 +41,11 @@ int main(){
     while (fscanf(f, "%s", palabra_act) == 1) {//Si un error de entrada ocurre antes de cualquier conversión, la función fscanf retorna EOf
         agregarInicio(&l, palabra_act);
     }
-    // imprimirLista(l); //pa debuguear
+    imprimirLista(l); //pa debuguear
+
+    printf("2da\n");
+    imprimirLista(l); //pa debuguear
+
 
     printf("Ingrese una palabra a buscar (ZZZ para finalizar): ");
     scanf("%s", palabra);
@@ -80,7 +86,7 @@ void buscarPalabra(lista l, char palabra[], int* encontre){
 }
 
 
-void inicializarLista(lista* l){
+void inicializarLista(lista *l){
     (*l)=NULL;
 }
 
@@ -104,10 +110,10 @@ void liberarLista(lista* l){
 
 
 void imprimirLista(lista l){
-    lista aux=l;
-        while(aux!=NULL){
-            printf("%s, ",aux->dato);
-            aux=aux->sig;
+    // lista aux=l;
+        while(l->sig!=NULL){
+            printf("%s, ",l->dato);
+            l=l->sig;
     }
-
+    printf("Hola\n");
 }

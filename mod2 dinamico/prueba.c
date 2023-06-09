@@ -1,27 +1,18 @@
 #include <stdlib.h>
 #include <stdio.h>
-#define TOKENCONCAT(a, b) a##b
-#define aux "
-
+#define F 5
+#define C 4
 int main(){
 
-    int *mU, **mB, m[5][5]={0};
+    int *mU;
+    int i=2,  j=1;
 
-    mU=malloc(5*5*sizeof(int));
+    mU=malloc(F*C*sizeof(int));
 
-    mB=malloc(sizeof(void*)*5);
-    for(int i=0; i<5; i++){
-        mB[i]=malloc(sizeof(int)*5);
-    }
+    mU[i*C+j]=7;
 
-    //1er elemento
-    printf("%d %d %d\n", mU[0], mB[0][0], m[0][0]);
 
-    int i=4,  j=6;
-    printf("%d %d %d\n", mU[i*5 + j], mB[i][j], m[i][j]);
-
-    // char * OK="hola";
-
-    // printf("%s %s %s", TOKENCONCAT(TOKENCONCAT(aux,K), TOKENCONCAT(O,aux)));   
+    printf("%d\n", mU[i*C+j]);
+ 
     return 0;
 }

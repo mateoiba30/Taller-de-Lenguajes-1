@@ -36,11 +36,12 @@ int main(){
         scanf("%d", &n); 
     }
 
-    printf("ingrese numero para eliminar multiplos: ");
-    scanf("%d", &n);
-    eliminarMultiplos(&l, n);
+    // printf("ingrese numero para eliminar multiplos: ");
+    // scanf("%d", &n);
+    // eliminarMultiplos(&l, n);
     
     imprimirLista(l);
+
     liberarLista(&l);
     return 0;
 }
