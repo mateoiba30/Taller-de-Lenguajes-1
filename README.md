@@ -1,11 +1,11 @@
 # TdL1
 
-Este repositorio contiene las prácticas realizadas en la materia **Taller de Lenguajes 1**.
-Módulo 1: uniones, enumerativos, operadores de bits, estructuras, arreglos, punteros, funciones, etc.
-Módulo 2: archivos txt, archivos binarios, bibliotecas, preprocesador, redireccionamiento, argumentos main, directivas,  memoria dinámica, etc.
+This repository contains the practices carried out in the subject **Language Workshop 1**.
+Module 1: unions, enumeratives, bit operators, structures, arrays, pointers, functions, etc.
+Module 2: txt files, binary files, libraries, preprocessor, redirection, main arguments, directives, dynamic memory, etc.
 
-## Prácticas
+## Practices
 
-- [modulo 1](mod1%20estatico/)
+- [module 1](mod1%20estatico/)
 
-- [modulo 2](mod2%20dinamico/)
+- [module 2](mod2%20dinamico/)
